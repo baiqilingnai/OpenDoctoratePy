@@ -63,7 +63,11 @@ def accountSyncData():
             continue
         
         player_data["user"]["skin"]["characterSkins"][skinKeys[cnt]] = 1
-        tempSkinTable[data_skin["charSkins"][i]["charId"]] = data_skin["charSkins"][i]["skinId"]
+        skin_info = data_skin["charSkins"][i]
+        char_id = skin_info["charId"]
+        if not char_id in tempSkinTable.keys() \
+                or skin_info["displaySkin"]["onYear"] > tempSkinTable[char_id]["displaySkin"]["onYear"]:
+            tempSkinTable[char_id] = skin_info["skinId"]
         cnt += 1
         
     #Tamper Operators
