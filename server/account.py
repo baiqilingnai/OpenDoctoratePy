@@ -113,7 +113,7 @@ def accountSyncData():
             "level": level,
             "exp": 0,
             "evolvePhase": evolvePhase,
-            "defaultSkillIndex": 0,
+            "defaultSkillIndex": len(character_table[i]["skills"])-1,
             "gainTime": int(time()),
             "skills": [],
             "voiceLan": "JP",
