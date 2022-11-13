@@ -1,0 +1,1098 @@
+{
+    "outer": {
+        "rogue_1": {
+            "record": {
+                "last": 0,
+                "modeCnt": {},
+                "endingCnt": {},
+                "stageCnt": {},
+                "bandCnt": {}
+            }
+        }
+    },
+    "current": {
+        "player": {
+            "state": "PENDING",
+            "property": {
+                "exp": 0,
+                "level": 1,
+                "hp": 3.0,
+                "gold": 18,
+                "capacity": 7,
+                "population": {
+                    "cost": 6,
+                    "max": 7.0
+                },
+                "conPerfectBattle": 0
+            },
+            "cursor": {
+                "zone": 1,
+                "position": {
+                    "x": 0,
+                    "y": 1
+                }
+            },
+            "trace": [
+                {
+                    "zone": 1,
+                    "position": {
+                        "x": 0,
+                        "y": 1
+                    }
+                }
+            ],
+            "pending": [
+                {
+                    "index": "e_1",
+                    "type": "BATTLE",
+                    "content": {
+                        "battle": {
+                            "state": 1,
+                            "chestCnt": 5,
+                            "goldTrapCnt": 5,
+                            "tmpChar": [],
+                            "unKeepBuff": [
+                                {
+                                    "key": "char_attribute_mul",
+                                    "blackboard": [
+                                        {
+                                            "key": "selector.profession",
+                                            "valueStr": "warrior|sniper|tank|medic|support|caster|special|pioneer"
+                                        },
+                                        {
+                                            "key": "respawn_time",
+                                            "value": -1.0
+                                        },
+                                        {
+                                            "key": "cost",
+                                            "value": -50.0
+                                        }
+                                    ]
+                                },
+                                {
+                                    "key": "char_attribute_add",
+                                    "blackboard": [
+                                        {
+                                            "key": "attack_speed",
+                                            "value": 500
+                                        },
+                                        {
+                                            "key": "stack_by_res",
+                                            "valueStr": "rogue_1_gold"
+                                        },
+                                        {
+                                            "key": "stack_by_res_cnt",
+                                            "value": 0
+                                        }
+                                    ]
+                                },
+                                {
+                                    "key": "global_buff_normal",
+                                    "blackboard": [
+                                        {
+                                            "key": "key",
+                                            "valueStr": "damage_resistance[filter_tag]"
+                                        },
+                                        {
+                                            "key": "tag",
+                                            "valueStr": "originiumartscraft"
+                                        },
+                                        {
+                                            "key": "damage_resistance",
+                                            "value": 1.0
+                                        },
+                                        {
+                                            "key": "selector.profession",
+                                            "valueStr": "warrior|sniper|tank|medic|support|caster|special|pioneer"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "key": "level_init_cost_add",
+                                    "blackboard": [
+                                        {
+                                            "key": "value",
+                                            "value": 99.0
+                                        }
+                                    ]
+                                },
+                                {
+                                    "key": "global_buff_stack",
+                                    "blackboard": [
+                                        {
+                                            "key": "key",
+                                            "valueStr": "modify_sp[born]"
+                                        },
+                                        {
+                                            "key": "selector.profession",
+                                            "valueStr": "warrior|sniper|tank|medic|support|caster|special|pioneer"
+                                        },
+                                        {
+                                            "key": "sp",
+                                            "value": 50.0
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                }
+            ],
+            "status": {
+                "bankPut": 0
+            },
+            "toEnding": "ro_ending_1",
+            "chgEnding": null
+        },
+        "map": {
+            "zones": {
+                "1": {
+                    "id": "zone_1",
+                    "index": 1,
+                    "nodes": {
+                        "0": {
+                            "index": "0",
+                            "pos": {
+                                "x": 0,
+                                "y": 0
+                            },
+                            "next": [
+                                {
+                                    "x": 1,
+                                    "y": 0
+                                },
+                                {
+                                    "x": 1,
+                                    "y": 2
+                                }
+                            ],
+                            "type": 64
+                        },
+                        "1": {
+                            "index": "1",
+                            "pos": {
+                                "x": 0,
+                                "y": 1
+                            },
+                            "next": [
+                                {
+                                    "x": 1,
+                                    "y": 0
+                                },
+                                {
+                                    "x": 1,
+                                    "y": 1
+                                },
+                                {
+                                    "x": 1,
+                                    "y": 2
+                                }
+                            ],
+                            "type": 1,
+                            "stage": "ro1_n_1_3"
+                        },
+                        "2": {
+                            "index": "2",
+                            "pos": {
+                                "x": 0,
+                                "y": 2
+                            },
+                            "next": [
+                                {
+                                    "x": 1,
+                                    "y": 0
+                                },
+                                {
+                                    "x": 1,
+                                    "y": 1
+                                },
+                                {
+                                    "x": 1,
+                                    "y": 2
+                                },
+                                {
+                                    "x": 1,
+                                    "y": 3
+                                }
+                            ],
+                            "type": 8
+                        },
+                        "3": {
+                            "index": "3",
+                            "pos": {
+                                "x": 0,
+                                "y": 3
+                            },
+                            "next": [
+                                {
+                                    "x": 1,
+                                    "y": 0
+                                },
+                                {
+                                    "x": 1,
+                                    "y": 1
+                                }
+                            ],
+                            "type": 8
+                        },
+                        "100": {
+                            "index": "100",
+                            "pos": {
+                                "x": 1,
+                                "y": 0
+                            },
+                            "next": [
+                                {
+                                    "x": 2,
+                                    "y": 0
+                                },
+                                {
+                                    "x": 2,
+                                    "y": 1
+                                },
+                                {
+                                    "x": 2,
+                                    "y": 2
+                                },
+                                {
+                                    "x": 2,
+                                    "y": 3
+                                }
+                            ],
+                            "type": 1,
+                            "stage": "ro1_n_1_2"
+                        },
+                        "101": {
+                            "index": "101",
+                            "pos": {
+                                "x": 1,
+                                "y": 1
+                            },
+                            "next": [
+                                {
+                                    "x": 2,
+                                    "y": 0
+                                },
+                                {
+                                    "x": 2,
+                                    "y": 2
+                                }
+                            ],
+                            "type": 128
+                        },
+                        "102": {
+                            "index": "102",
+                            "pos": {
+                                "x": 1,
+                                "y": 2
+                            },
+                            "next": [
+                                {
+                                    "x": 2,
+                                    "y": 0
+                                },
+                                {
+                                    "x": 2,
+                                    "y": 2
+                                },
+                                {
+                                    "x": 2,
+                                    "y": 3
+                                }
+                            ],
+                            "type": 1,
+                            "stage": "ro1_n_1_2"
+                        },
+                        "103": {
+                            "index": "103",
+                            "pos": {
+                                "x": 1,
+                                "y": 3
+                            },
+                            "next": [
+                                {
+                                    "x": 2,
+                                    "y": 0
+                                }
+                            ],
+                            "type": 64
+                        },
+                        "200": {
+                            "index": "200",
+                            "pos": {
+                                "x": 2,
+                                "y": 0
+                            },
+                            "next": [
+                                {
+                                    "x": 3,
+                                    "y": 0
+                                }
+                            ],
+                            "type": 16
+                        },
+                        "201": {
+                            "index": "201",
+                            "pos": {
+                                "x": 2,
+                                "y": 1
+                            },
+                            "next": [
+                                {
+                                    "x": 3,
+                                    "y": 0
+                                }
+                            ],
+                            "type": 32
+                        },
+                        "202": {
+                            "index": "202",
+                            "pos": {
+                                "x": 2,
+                                "y": 2
+                            },
+                            "next": [
+                                {
+                                    "x": 3,
+                                    "y": 0
+                                },
+                                {
+                                    "x": 3,
+                                    "y": 1
+                                },
+                                {
+                                    "x": 3,
+                                    "y": 3
+                                }
+                            ],
+                            "type": 128
+                        },
+                        "203": {
+                            "index": "203",
+                            "pos": {
+                                "x": 2,
+                                "y": 3
+                            },
+                            "next": [
+                                {
+                                    "x": 3,
+                                    "y": 0
+                                }
+                            ],
+                            "type": 32
+                        },
+                        "300": {
+                            "index": "300",
+                            "pos": {
+                                "x": 3,
+                                "y": 0
+                            },
+                            "next": [
+                                {
+                                    "x": 4,
+                                    "y": 0
+                                }
+                            ],
+                            "type": 32
+                        },
+                        "301": {
+                            "index": "301",
+                            "pos": {
+                                "x": 3,
+                                "y": 1
+                            },
+                            "next": [
+                                {
+                                    "x": 4,
+                                    "y": 0
+                                },
+                                {
+                                    "x": 4,
+                                    "y": 2
+                                }
+                            ],
+                            "type": 1,
+                            "stage": "ro1_n_1_3"
+                        },
+                        "302": {
+                            "index": "302",
+                            "pos": {
+                                "x": 3,
+                                "y": 2
+                            },
+                            "next": [
+                                {
+                                    "x": 4,
+                                    "y": 0
+                                },
+                                {
+                                    "x": 4,
+                                    "y": 1
+                                },
+                                {
+                                    "x": 4,
+                                    "y": 2
+                                }
+                            ],
+                            "type": 32
+                        },
+                        "303": {
+                            "index": "303",
+                            "pos": {
+                                "x": 3,
+                                "y": 3
+                            },
+                            "next": [
+                                {
+                                    "x": 4,
+                                    "y": 0
+                                },
+                                {
+                                    "x": 4,
+                                    "y": 1
+                                },
+                                {
+                                    "x": 4,
+                                    "y": 2
+                                }
+                            ],
+                            "type": 128
+                        },
+                        "400": {
+                            "index": "400",
+                            "pos": {
+                                "x": 4,
+                                "y": 0
+                            },
+                            "next": [
+                                {
+                                    "x": 5,
+                                    "y": 0
+                                },
+                                {
+                                    "x": 5,
+                                    "y": 2
+                                },
+                                {
+                                    "x": 5,
+                                    "y": 3
+                                }
+                            ],
+                            "type": 64
+                        },
+                        "401": {
+                            "index": "401",
+                            "pos": {
+                                "x": 4,
+                                "y": 1
+                            },
+                            "next": [
+                                {
+                                    "x": 5,
+                                    "y": 0
+                                },
+                                {
+                                    "x": 5,
+                                    "y": 1
+                                }
+                            ],
+                            "type": 64
+                        },
+                        "402": {
+                            "index": "402",
+                            "pos": {
+                                "x": 4,
+                                "y": 2
+                            },
+                            "next": [
+                                {
+                                    "x": 5,
+                                    "y": 0
+                                },
+                                {
+                                    "x": 5,
+                                    "y": 2
+                                },
+                                {
+                                    "x": 5,
+                                    "y": 3
+                                }
+                            ],
+                            "type": 1,
+                            "stage": "ro1_n_1_4"
+                        },
+                        "403": {
+                            "index": "403",
+                            "pos": {
+                                "x": 4,
+                                "y": 3
+                            },
+                            "next": [
+                                {
+                                    "x": 5,
+                                    "y": 0
+                                },
+                                {
+                                    "x": 5,
+                                    "y": 2
+                                }
+                            ],
+                            "type": 8
+                        },
+                        "500": {
+                            "index": "500",
+                            "pos": {
+                                "x": 5,
+                                "y": 0
+                            },
+                            "next": [
+                                {
+                                    "x": 6,
+                                    "y": 0
+                                }
+                            ],
+                            "type": 2,
+                            "stage": "ro1_e_1_4"
+                        },
+                        "501": {
+                            "index": "501",
+                            "pos": {
+                                "x": 5,
+                                "y": 1
+                            },
+                            "next": [
+                                {
+                                    "x": 6,
+                                    "y": 0
+                                },
+                                {
+                                    "x": 6,
+                                    "y": 3
+                                }
+                            ],
+                            "type": 1,
+                            "stage": "ro1_n_1_1"
+                        },
+                        "502": {
+                            "index": "502",
+                            "pos": {
+                                "x": 5,
+                                "y": 2
+                            },
+                            "next": [
+                                {
+                                    "x": 6,
+                                    "y": 0
+                                },
+                                {
+                                    "x": 6,
+                                    "y": 1
+                                },
+                                {
+                                    "x": 6,
+                                    "y": 2
+                                }
+                            ],
+                            "type": 1,
+                            "stage": "ro1_n_1_3"
+                        },
+                        "503": {
+                            "index": "503",
+                            "pos": {
+                                "x": 5,
+                                "y": 3
+                            },
+                            "next": [
+                                {
+                                    "x": 6,
+                                    "y": 0
+                                },
+                                {
+                                    "x": 6,
+                                    "y": 1
+                                },
+                                {
+                                    "x": 6,
+                                    "y": 3
+                                }
+                            ],
+                            "type": 128
+                        },
+                        "600": {
+                            "index": "600",
+                            "pos": {
+                                "x": 6,
+                                "y": 0
+                            },
+                            "next": [
+                                {
+                                    "x": 7,
+                                    "y": 0
+                                },
+                                {
+                                    "x": 7,
+                                    "y": 1
+                                },
+                                {
+                                    "x": 7,
+                                    "y": 3
+                                }
+                            ],
+                            "type": 2,
+                            "stage": "ro1_e_1_3"
+                        },
+                        "601": {
+                            "index": "601",
+                            "pos": {
+                                "x": 6,
+                                "y": 1
+                            },
+                            "next": [
+                                {
+                                    "x": 7,
+                                    "y": 0
+                                },
+                                {
+                                    "x": 7,
+                                    "y": 1
+                                },
+                                {
+                                    "x": 7,
+                                    "y": 2
+                                }
+                            ],
+                            "type": 32
+                        },
+                        "602": {
+                            "index": "602",
+                            "pos": {
+                                "x": 6,
+                                "y": 2
+                            },
+                            "next": [
+                                {
+                                    "x": 7,
+                                    "y": 0
+                                },
+                                {
+                                    "x": 7,
+                                    "y": 1
+                                },
+                                {
+                                    "x": 7,
+                                    "y": 3
+                                }
+                            ],
+                            "type": 32
+                        },
+                        "603": {
+                            "index": "603",
+                            "pos": {
+                                "x": 6,
+                                "y": 3
+                            },
+                            "next": [
+                                {
+                                    "x": 7,
+                                    "y": 0
+                                },
+                                {
+                                    "x": 7,
+                                    "y": 3
+                                }
+                            ],
+                            "type": 8
+                        },
+                        "700": {
+                            "index": "700",
+                            "pos": {
+                                "x": 7,
+                                "y": 0
+                            },
+                            "next": [
+                                {
+                                    "x": 8,
+                                    "y": 0
+                                },
+                                {
+                                    "x": 8,
+                                    "y": 2
+                                }
+                            ],
+                            "type": 64
+                        },
+                        "701": {
+                            "index": "701",
+                            "pos": {
+                                "x": 7,
+                                "y": 1
+                            },
+                            "next": [
+                                {
+                                    "x": 8,
+                                    "y": 0
+                                },
+                                {
+                                    "x": 8,
+                                    "y": 1
+                                }
+                            ],
+                            "type": 2,
+                            "stage": "ro1_e_1_2"
+                        },
+                        "702": {
+                            "index": "702",
+                            "pos": {
+                                "x": 7,
+                                "y": 2
+                            },
+                            "next": [
+                                {
+                                    "x": 8,
+                                    "y": 0
+                                },
+                                {
+                                    "x": 8,
+                                    "y": 1
+                                }
+                            ],
+                            "type": 64
+                        },
+                        "703": {
+                            "index": "703",
+                            "pos": {
+                                "x": 7,
+                                "y": 3
+                            },
+                            "next": [
+                                {
+                                    "x": 8,
+                                    "y": 0
+                                },
+                                {
+                                    "x": 8,
+                                    "y": 1
+                                },
+                                {
+                                    "x": 8,
+                                    "y": 2
+                                }
+                            ],
+                            "type": 16
+                        },
+                        "800": {
+                            "index": "800",
+                            "pos": {
+                                "x": 8,
+                                "y": 0
+                            },
+                            "next": [
+                                {
+                                    "x": 9,
+                                    "y": 0
+                                },
+                                {
+                                    "x": 9,
+                                    "y": 2
+                                }
+                            ],
+                            "type": 1,
+                            "stage": "ro1_n_1_3"
+                        },
+                        "801": {
+                            "index": "801",
+                            "pos": {
+                                "x": 8,
+                                "y": 1
+                            },
+                            "next": [
+                                {
+                                    "x": 9,
+                                    "y": 0
+                                },
+                                {
+                                    "x": 9,
+                                    "y": 2
+                                },
+                                {
+                                    "x": 9,
+                                    "y": 3
+                                }
+                            ],
+                            "type": 128
+                        },
+                        "802": {
+                            "index": "802",
+                            "pos": {
+                                "x": 8,
+                                "y": 2
+                            },
+                            "next": [
+                                {
+                                    "x": 9,
+                                    "y": 0
+                                }
+                            ],
+                            "type": 2,
+                            "stage": "ro1_e_1_1"
+                        },
+                        "803": {
+                            "index": "803",
+                            "pos": {
+                                "x": 8,
+                                "y": 3
+                            },
+                            "next": [
+                                {
+                                    "x": 9,
+                                    "y": 0
+                                },
+                                {
+                                    "x": 9,
+                                    "y": 3
+                                }
+                            ],
+                            "type": 32
+                        },
+                        "900": {
+                            "index": "900",
+                            "pos": {
+                                "x": 9,
+                                "y": 0
+                            },
+                            "next": [],
+                            "type": 16,
+                            "zone_end": true
+                        },
+                        "901": {
+                            "index": "901",
+                            "pos": {
+                                "x": 9,
+                                "y": 1
+                            },
+                            "next": [],
+                            "type": 32,
+                            "zone_end": true
+                        },
+                        "902": {
+                            "index": "902",
+                            "pos": {
+                                "x": 9,
+                                "y": 2
+                            },
+                            "next": [],
+                            "type": 1,
+                            "stage": "ro1_n_1_2",
+                            "zone_end": true
+                        },
+                        "903": {
+                            "index": "903",
+                            "pos": {
+                                "x": 9,
+                                "y": 3
+                            },
+                            "next": [],
+                            "type": 8,
+                            "zone_end": true
+                        }
+                    }
+                }
+            }
+        },
+        "troop": {
+            "chars": {
+                "1": {
+                    "instId": 1,
+                    "charId": "char_112_siege",
+                    "type": "NORMAL",
+                    "favorPoint": 25570,
+                    "potentialRank": 5,
+                    "mainSkillLvl": 7,
+                    "skin": "char_112_siege@striker#2",
+                    "level": 90,
+                    "exp": 0,
+                    "evolvePhase": 2,
+                    "defaultSkillIndex": 0,
+                    "skills": [
+                        {
+                            "skillId": "skcom_charge_cost[3]",
+                            "unlock": 1,
+                            "state": 0,
+                            "specializeLevel": 3,
+                            "completeUpgradeTime": -1
+                        },
+                        {
+                            "skillId": "skchr_siege_2",
+                            "unlock": 1,
+                            "state": 0,
+                            "specializeLevel": 3,
+                            "completeUpgradeTime": -1
+                        },
+                        {
+                            "skillId": "skchr_siege_3",
+                            "unlock": 1,
+                            "state": 0,
+                            "specializeLevel": 3,
+                            "completeUpgradeTime": -1
+                        }
+                    ],
+                    "currentEquip": null,
+                    "equip": {},
+                    "upgradeLimited": false,
+                    "upgradePhase": 1,
+                    "isUpgrade": false,
+                    "population": 6
+                },
+                "2": {
+                    "instId": 2,
+                    "charId": "char_504_rguard",
+                    "type": "NORMAL",
+                    "favorPoint": 25570,
+                    "potentialRank": 5,
+                    "mainSkillLvl": 7,
+                    "skin": "char_504_rguard#1",
+                    "level": 55,
+                    "exp": 0,
+                    "evolvePhase": 1,
+                    "defaultSkillIndex": 0,
+                    "skills": [],
+                    "currentEquip": null,
+                    "equip": {},
+                    "upgradeLimited": false,
+                    "upgradePhase": 1,
+                    "isUpgrade": false,
+                    "population": 0
+                }
+            }
+        },
+        "inventory": {
+            "relic": {
+                "r_0": {
+                    "index": "r_0",
+                    "id": "rogue_1_band_4",
+                    "count": 1,
+                    "ts": 1666488781
+                },
+                "r_1": {
+                    "index": "r_1",
+                    "id": "rogue_1_relic_r01",
+                    "count": 1,
+                    "ts": 1666488791
+                }
+            },
+            "recruit": {
+                "t_0": {
+                    "index": "t_0",
+                    "id": "rogue_1_recruit_ticket_support_sp",
+                    "state": 2,
+                    "list": [],
+                    "result": null,
+                    "ts": 1666489027,
+                    "from": "initial",
+                    "mustExtra": 0,
+                    "needAssist": true
+                },
+                "t_1": {
+                    "index": "t_1",
+                    "id": "rogue_1_recruit_ticket_pioneer",
+                    "state": 2,
+                    "list": [],
+                    "result": {
+                        "instId": 1,
+                        "charId": "char_112_siege",
+                        "type": "NORMAL",
+                        "favorPoint": 25570,
+                        "potentialRank": 5,
+                        "mainSkillLvl": 7,
+                        "skin": "char_112_siege@striker#2",
+                        "level": 90,
+                        "exp": 0,
+                        "evolvePhase": 2,
+                        "defaultSkillIndex": 0,
+                        "skills": [
+                            {
+                                "skillId": "skcom_charge_cost[3]",
+                                "unlock": 1,
+                                "state": 0,
+                                "specializeLevel": 3,
+                                "completeUpgradeTime": -1
+                            },
+                            {
+                                "skillId": "skchr_siege_2",
+                                "unlock": 1,
+                                "state": 0,
+                                "specializeLevel": 3,
+                                "completeUpgradeTime": -1
+                            },
+                            {
+                                "skillId": "skchr_siege_3",
+                                "unlock": 1,
+                                "state": 0,
+                                "specializeLevel": 3,
+                                "completeUpgradeTime": -1
+                            }
+                        ],
+                        "currentEquip": null,
+                        "equip": {},
+                        "upgradeLimited": false,
+                        "upgradePhase": 1,
+                        "isUpgrade": false,
+                        "population": 6
+                    },
+                    "ts": 1666489027,
+                    "from": "initial",
+                    "mustExtra": 0,
+                    "needAssist": true
+                },
+                "t_2": {
+                    "index": "t_2",
+                    "id": "rogue_1_recruit_ticket_special",
+                    "state": 2,
+                    "list": [],
+                    "result": {
+                        "instId": 2,
+                        "charId": "char_504_rguard",
+                        "type": "NORMAL",
+                        "favorPoint": 25570,
+                        "potentialRank": 5,
+                        "mainSkillLvl": 7,
+                        "skin": "char_504_rguard#1",
+                        "level": 55,
+                        "exp": 0,
+                        "evolvePhase": 1,
+                        "defaultSkillIndex": 0,
+                        "skills": [],
+                        "currentEquip": null,
+                        "equip": {},
+                        "upgradeLimited": false,
+                        "upgradePhase": 1,
+                        "isUpgrade": false,
+                        "population": 0
+                    },
+                    "ts": 1666489027,
+                    "from": "initial",
+                    "mustExtra": 0,
+                    "needAssist": true
+                }
+            },
+            "trap": null
+        },
+        "game": {
+            "mode": "NORMAL",
+            "predefined": null,
+            "theme": "rogue_1",
+            "outer": {
+                "support": true
+            },
+            "start": 0
+        },
+        "buff": {
+            "tmpHP": 1,
+            "capsule": null
+        },
+        "record": {
+            "brief": null
+        }
+    },
+    "battleId": "1234567890-abcd-abcd-1234567890"
+}
