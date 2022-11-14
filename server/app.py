@@ -64,6 +64,7 @@ app.add_url_rule('/rlv2/moveAndBattleStart', methods=['POST'], view_func=rlv2.rl
 app.add_url_rule('/shop/getSkinGoodList', methods=['POST'], view_func=shop.shopGetSkinGoodList)
 
 app.add_url_rule('/story/finishStory', methods=['POST'], view_func=story.storyFinishStory)
+app.add_url_rule('/quest/finishStoryStage', methods=['POST'], view_func=story.storyFinishStory)
 
 app.add_url_rule('/user/auth', methods=['POST'], view_func=user.userAuth)
 app.add_url_rule('/user/checkIn', methods=['POST'], view_func=user.userCheckIn)
