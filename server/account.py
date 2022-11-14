@@ -56,18 +56,16 @@ def accountSyncData():
     #Tamper Skins
     skinKeys = list(data_skin["charSkins"].keys())
     player_data["user"]["skin"]["characterSkins"] = {}
-    for i in data_skin["charSkins"]:
+    for i in data_skin["charSkins"].values():
         if "@" not in skinKeys[cnt]:
             # Not Special Skins
             cnt += 1
             continue
         
         player_data["user"]["skin"]["characterSkins"][skinKeys[cnt]] = 1
-        skin_info = data_skin["charSkins"][i]
-        char_id = skin_info["charId"]
-        if not char_id in tempSkinTable.keys() \
-                or skin_info["displaySkin"]["onYear"] > tempSkinTable[char_id]["displaySkin"]["onYear"]:
-            tempSkinTable[char_id] = skin_info["skinId"]
+        if not i["charId"] in tempSkinTable.keys() \
+                or i["displaySkin"]["onYear"] > data_skin["charSkins"][tempSkinTable[i["charId"]]]["displaySkin"]["onYear"]:
+            tempSkinTable[i["charId"]] = i["skinId"]
         cnt += 1
         
     #Tamper Operators
