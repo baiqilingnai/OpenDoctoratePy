@@ -12,7 +12,7 @@ def crisisGetCrisisInfo():
     selected_crisis = read_json(CONFIG_PATH)["crisisConfig"]["selectedCrisis"]
 
     if selected_crisis:
-        rune = read_json(f"{CRISIS_JSON_BASE_PATH}{selected_crisis}.json")
+        rune = read_json(f"{CRISIS_JSON_BASE_PATH}{selected_crisis}.json", encoding="utf-8")
         current_time = round(time())
         next_day = round(time()) + 86400
 
