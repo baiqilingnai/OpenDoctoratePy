@@ -27,7 +27,7 @@ with suppress(RuntimeError):
     device.root()
 
 if not frida_exists:
-    architecture = device.shell("getprop ro.product.cpu.abi").strip()
+    architecture = device.shell("getprop ro.product.cpu.abi").strip().replace("-v8a", "")
     print(f"Architexture: {architecture}")
 
     version = requests.get("https://api.github.com/repos/frida/frida/releases/latest").json()["tag_name"]
