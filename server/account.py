@@ -268,7 +268,6 @@ def accountSyncData():
 
     # Tamper Stages
     myStageList = {}
-    paradoxStageList = {}
     stage_table = requests.get(STAGE_TABLE_URL).json()
     for stage in stage_table["stages"]:
         myStageList.update({
@@ -282,12 +281,28 @@ def accountSyncData():
                 "state": 3
             }
         })
+    
+    player_data["user"]["dungeon"]["stages"] = myStageList
 
-    paradox_stage_table = requests.get(HANDBOOK_INFO_TABLE_URL).json()
-    for stage in paradox_stage_table["handbookStageData"]:
-        paradoxStageList[stage] = {
+    # Tamper addon [paradox&records]
+    addonList = {}
+    addon_table = requests.get(HANDBOOK_INFO_TABLE_URL).json()
+    for charId in addon_table["handbookDict"]:
+        addonList[charId] = {"story":{}}
+        story = addon_table["handbookDict"][charId]["handbookAvgList"]
+        for i,j in zip(story,range(len(story))):
+            if "storySetId" in i:
+                addonList[charId]["story"].update({
+                    addon_table["handbookDict"][charId]["handbookAvgList"][j]["storySetId"]: {
+                        "fts": 1649232340,
+                        "rts": 1649232340
+                    }
+                })
+
+    for stage in addon_table["handbookStageData"]:
+        addonList[stage].update({
             "stage": {
-                paradox_stage_table["handbookStageData"][stage]["stageId"]: {
+                addon_table["handbookStageData"][stage]["stageId"]: {
                     "startTimes": 0,
                     "completeTimes": 1,
                     "state": 3,
@@ -296,10 +311,9 @@ def accountSyncData():
                     "startTime": 2
                 }
             }
-        } 
-    
-    player_data["user"]["dungeon"]["stages"] = myStageList
-    player_data["user"]["troop"]["addon"] = paradoxStageList
+        }) 
+
+    player_data["user"]["troop"]["addon"].update(addonList) # TODO: I might try MongoDB in the future.
 
     # Tamper Side Stories and Intermezzis
     block = {}

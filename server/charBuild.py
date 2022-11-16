@@ -42,7 +42,7 @@ def charBuildaddonStoryUnlock():
     charId = {request_data["charId"]: storyId}
 
     saved_data = read_json(USER_JSON_PATH)
-    saved_data["user"]["troop"]["addon"] = charId
+    saved_data["user"]["troop"]["addon"].update(charId)
 
     data["playerDataDelta"]["modified"]["troop"]["addon"].update(charId)
 
