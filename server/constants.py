@@ -14,6 +14,7 @@ HANDBOOK_INFO_TABLE_URL = BASE_URL + "/excel/handbook_info_table.json"
 
 # Config Data
 CONFIG_PATH = "config\\config.json"
+MAILLIST_PATH = "config\\mails.json"
 RLV2_CONFIG_PATH = "config\\rlv2Config.json"
 SYNC_DATA_TEMPLATE_PATH = "syncData.json"
 
