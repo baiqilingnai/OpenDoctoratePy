@@ -14,14 +14,14 @@
         ]
       },
         "2": {
-            "from": "char_206_gnosis",
+            "from": "char_472_pasngr",
             "subject": "Test",
             "content": "Part 1",
             "items": [
                 {
-                    "id": "voucher_full_bison",
+                    "id": "p_char_472_pasngr",
                     "type": "MATERIAL",
-                    "count": 1
+                    "count": 5
                 },
                 {
                     "id": "4003",
@@ -41,7 +41,7 @@
                 {
                     "id": "7004",
                     "type": "TKT_GACHA_10",
-                    "count": 2
+                    "count": 9
                 }
             ]
         }
