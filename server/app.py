@@ -3,7 +3,7 @@ from datetime import datetime
 from flask import Flask
 
 import account, background, building, campaignV2, char, charBuild, charm, crisis, \
-        deepsea, online, quest, pay, rlv2, shop, story, user, mail
+        deepsea,mail, online, quest, pay, rlv2, shop, story, user
 
 app = Flask(__name__)
 port = 8443
@@ -39,6 +39,7 @@ app.add_url_rule('/crisis/battleStart', methods=['POST'], view_func=crisis.crisi
 app.add_url_rule('/crisis/battleFinish', methods=['POST'], view_func=crisis.crisisBattleFinish)
 
 app.add_url_rule('/deepSea/branch', methods=['POST'], view_func=deepsea.deepSeaBranch)
+app.add_url_rule('/deepSea/event', methods=['POST'], view_func=deepsea.deepSeaEvent)
 
 app.add_url_rule('/mail/getMetaInfoList', methods=['POST'], view_func=mail.mailGetMetaInfoList)
 app.add_url_rule('/mail/listMailBox', methods=['POST'], view_func=mail.mailListMailBox)
