@@ -3,7 +3,7 @@ from datetime import datetime
 from flask import Flask
 
 import account, background, building, campaignV2, char, charBuild, charm, crisis, \
-        deepsea, online, quest, pay, rlv2, shop, story, user
+        deepsea,mail, online, quest, pay, rlv2, shop, story, user
 
 app = Flask(__name__)
 port = 8443
@@ -39,6 +39,13 @@ app.add_url_rule('/crisis/battleStart', methods=['POST'], view_func=crisis.crisi
 app.add_url_rule('/crisis/battleFinish', methods=['POST'], view_func=crisis.crisisBattleFinish)
 
 app.add_url_rule('/deepSea/branch', methods=['POST'], view_func=deepsea.deepSeaBranch)
+app.add_url_rule('/deepSea/event', methods=['POST'], view_func=deepsea.deepSeaEvent)
+
+app.add_url_rule('/mail/getMetaInfoList', methods=['POST'], view_func=mail.mailGetMetaInfoList)
+app.add_url_rule('/mail/listMailBox', methods=['POST'], view_func=mail.mailListMailBox)
+app.add_url_rule('/mail/receiveMail', methods=['POST'], view_func=mail.mailReceiveMail)
+app.add_url_rule('/mail/receiveAllMail', methods=['POST'], view_func=mail.mailReceiveAllMail)
+app.add_url_rule('/mail/removeAllReceivedMail', methods=['POST'], view_func=mail.mailRemoveAllReceivedMail)
 
 app.add_url_rule('/online/v1/ping', methods=['POST'], view_func=online.onlineV1Ping)
 app.add_url_rule('/online/v1/loginout', methods=['POST'], view_func=online.onlineV1LoginOut)

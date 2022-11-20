@@ -27,3 +27,15 @@ def deepSeaBranch():
 
     return data
 
+
+def deepSeaEvent():
+
+    data = request.data
+    data = {
+        "playerDataDelta": {
+            "deleted": {},
+            "modified": {}
+        }
+    }
+
+    return data
