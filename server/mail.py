@@ -43,6 +43,7 @@ def mailListMailBox():
 
     data = request.data
     mails = []
+    statesList = []
     mail_data = read_json(MAILLIST_PATH, encoding="utf-8")
 
     for mailId in mail_data["mailList"]:
@@ -61,6 +62,7 @@ def mailListMailBox():
             "uid": ""
         }
 
+        statesList.append(config["state"])
         mails.append(dict(mail_data["mailList"][str(mailId)], **config))
 
     data = {
@@ -68,7 +70,7 @@ def mailListMailBox():
         "playerDataDelta": {
             "modified": {
                 "pushFlags": {
-                    "hasGifts": 1 if mails else 0
+                    "hasGifts": 1 if 0 in set(statesList) else 0
                 }
             },
             "deleted": {}
