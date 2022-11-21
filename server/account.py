@@ -11,7 +11,7 @@ from flask import request
 from constants import USER_JSON_PATH, CONFIG_PATH, BATTLE_REPLAY_JSON_PATH, \
                     SKIN_TABLE_URL, CHARACTER_TABLE_URL, EQUIP_TABLE_URL, STORY_TABLE_URL, STAGE_TABLE_URL, \
                     SYNC_DATA_TEMPLATE_PATH, BATTLEEQUIP_TABLE_URL, DM_TABLE_URL, RETRO_TABLE_URL, \
-                    HANDBOOK_INFO_TABLE_URL
+                    HANDBOOK_INFO_TABLE_URL, MAILLIST_PATH
 from utils import read_json, write_json
 
 def accountLogin():
@@ -35,6 +35,7 @@ def accountSyncData():
         write_json({}, USER_JSON_PATH)
 
     saved_data = read_json(USER_JSON_PATH)
+    mail_data = read_json(MAILLIST_PATH, encoding="utf-8")
     player_data = read_json(SYNC_DATA_TEMPLATE_PATH, encoding="utf-8")
     config = read_json(CONFIG_PATH)
 
@@ -371,6 +372,12 @@ def accountSyncData():
             }
         })
     player_data["user"]["background"]["bgs"] = bgs
+
+    # Check if mail exists
+    for mailId in mail_data["mailList"]:
+        if int(mailId) not in mail_data["recievedIDs"] and int(mailId) not in mail_data["deletedIDs"]:
+            player_data["user"]["pushFlags"]["hasGifts"] = 1
+            break
 
     # Update timestamps
     player_data["user"]["status"]["lastRefreshTs"] = ts

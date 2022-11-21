@@ -3,7 +3,7 @@ from datetime import datetime
 from flask import Flask
 
 import account, background, building, campaignV2, char, charBuild, charm, crisis, \
-        deepsea,mail, online, quest, pay, rlv2, shop, story, user
+        deepsea, mail, online, quest, pay, rlv2, shop, story, user
 
 app = Flask(__name__)
 port = 8443

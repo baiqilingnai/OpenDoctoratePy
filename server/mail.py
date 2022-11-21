@@ -3,11 +3,7 @@ from time import time
 from flask import request
 
 from constants import MAILLIST_PATH
-from utils import read_json
-
-receiveID = []
-removeID = []
-hasGift = 1
+from utils import read_json, write_json
 
 
 def mailGetMetaInfoList():
@@ -15,20 +11,21 @@ def mailGetMetaInfoList():
     data = request.data
 
     result = []
-    mail_list = read_json(MAILLIST_PATH, encoding="utf-8")["mailList"]
+    mail_data = read_json(MAILLIST_PATH, encoding="utf-8")
     
-    for mailId in mail_list:
+    for mailId in mail_data["mailList"]:
+
+        if int(mailId) in mail_data["deletedIDs"]:
+            continue
+
         config = {
             "createAt": round(time()),
             "hasItem": 1,
             "mailId": mailId,
-            "state": 0,
+            "state": 1 if int(mailId) in mail_data["recievedIDs"] else 0,
             "type": 1
         }
-        if mailId in receiveID:
-            config["state"] = 1
-        if int(mailId) in removeID:
-            continue
+        
         result.append(config)
 
     data = {
@@ -46,30 +43,32 @@ def mailListMailBox():
 
     data = request.data
     mails = []
-    mail_list = read_json(MAILLIST_PATH, encoding="utf-8")["mailList"]
+    mail_data = read_json(MAILLIST_PATH, encoding="utf-8")
 
-    for mailId in mail_list:
+    for mailId in mail_data["mailList"]:
+
+        if int(mailId) in mail_data["deletedIDs"]:
+            continue
+
         config = {
             "createAt": round(time()),
             "expireAt": round(time()) + 31536000,
             "mailId": mailId,
             "platform": -1,
-            "state": 0,
+            "state": 1 if int(mailId) in mail_data["recievedIDs"] else 0,
             "style": {},
             "type": 1,
             "uid": ""
         }
-        if mailId in receiveID:
-            config["state"] = 1
 
-        mails.append(dict(mail_list[mailId], **config))
+        mails.append(dict(mail_data["mailList"][str(mailId)], **config))
 
     data = {
         "mailList": mails,
         "playerDataDelta": {
             "modified": {
                 "pushFlags": {
-                    "hasGifts": hasGift
+                    "hasGifts": 1 if mails else 0
                 }
             },
             "deleted": {}
@@ -81,28 +80,24 @@ def mailListMailBox():
 
 def getItems(request_data, key):
 
-    global receiveID, hasGift
-
     items = []
-    mail_list = read_json(MAILLIST_PATH, encoding="utf-8")["mailList"]
+    hasGift = 1
+    mail_data = read_json(MAILLIST_PATH, encoding="utf-8")
 
-    for mailId in mail_list:
-        if mailId in receiveID:
-            continue
-        if key == "sysMailIdList":
-            if "items" in mail_list[mailId] and int(mailId) in request_data[key]:
-                for value in mail_list[mailId]["items"]:
-                    items.append(value)
-            receiveID.append(mailId)
-        else:
-            if "items" in mail_list[mailId] and int(mailId) == request_data[key]:
-                for value in mail_list[mailId]["items"]:
-                    items.append(value)
-            receiveID.append(mailId)
-            break
+    getIDList = request_data[key]
+    if key != "sysMailIdList":
+        getIDList = [request_data[key]]
 
-    if len(receiveID) == len(mail_list) or len(receiveID) == 0:
+    for mailId in getIDList:
+        mail_data["recievedIDs"].append(int(mailId))
+
+        if "items" in mail_data["mailList"][str(mailId)].keys():
+            items += mail_data["mailList"][str(mailId)]["items"]
+    
+    if len(mail_data["mailList"]) == len(mail_data["recievedIDs"]):
         hasGift = 0
+
+    write_json(mail_data, MAILLIST_PATH)
 
     return items, hasGift
 
@@ -158,15 +153,16 @@ def mailReceiveAllMail():
 
 
 def mailRemoveAllReceivedMail():
-    
-    global removeID
 
     data = request.data
     request_data = request.get_json()
+    mail_data = read_json(MAILLIST_PATH, encoding="utf-8")
 
-    for ID in request_data["sysMailIdList"]:
-        if ID not in removeID:
-            removeID.append(ID)
+    for mailId in request_data["sysMailIdList"]:
+        if mailId not in mail_data["deletedIDs"]:
+            mail_data["deletedIDs"].append(mailId)
+
+    write_json(mail_data, MAILLIST_PATH)
 
     data = {
         "result": {},
