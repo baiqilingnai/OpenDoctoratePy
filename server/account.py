@@ -11,7 +11,7 @@ from flask import request
 from constants import USER_JSON_PATH, CONFIG_PATH, BATTLE_REPLAY_JSON_PATH, \
                     SKIN_TABLE_URL, CHARACTER_TABLE_URL, EQUIP_TABLE_URL, STORY_TABLE_URL, STAGE_TABLE_URL, \
                     SYNC_DATA_TEMPLATE_PATH, BATTLEEQUIP_TABLE_URL, DM_TABLE_URL, RETRO_TABLE_URL, \
-                    HANDBOOK_INFO_TABLE_URL, MAILLIST_PATH
+                    HANDBOOK_INFO_TABLE_URL, MAILLIST_PATH, CHARM_TABLE_URL, ACTIVITY_TABLE_URL
 from utils import read_json, write_json
 
 def accountLogin():
@@ -46,6 +46,8 @@ def accountSyncData():
     battle_equip_table = requests.get(BATTLEEQUIP_TABLE_URL).json()
     display_meta_table = requests.get(DM_TABLE_URL).json()
     retro_table = requests.get(RETRO_TABLE_URL).json()
+    charm_table = requests.get(CHARM_TABLE_URL).json()
+    activity_table = requests.get(ACTIVITY_TABLE_URL).json()
 
     ts = round(time())
     cnt = 0
@@ -372,6 +374,61 @@ def accountSyncData():
             }
         })
     player_data["user"]["background"]["bgs"] = bgs
+
+    # Update charms
+    for charm in charm_table["charmList"]:
+        player_data["user"]["charm"]["charms"].update({charm["id"]: 1})
+
+    # Update battle bus
+    for car_gear in activity_table["carData"]["carDict"]:
+        player_data["user"]["car"]["accessories"].update({
+            car_gear: {
+                "id": car_gear,
+                "num": len(activity_table["carData"]["carDict"][car_gear]["posList"])
+            }
+        })
+
+    # Update Stultifera Navis
+    activity_data = activity_table["activity"]["TYPE_ACT17SIDE"]["act17side"]
+    for place in activity_data["placeDataMap"]:
+        player_data["user"]["deepSea"]["places"].update({place: 2})
+
+    for node in activity_data["nodeInfoDataMap"]:
+        player_data["user"]["deepSea"]["nodes"].update({node: 2})
+
+    for choice_node in activity_data["choiceNodeDataMap"]:
+        player_data["user"]["deepSea"]["choices"].update({
+            choice_node: [2 for _ in activity_data["choiceNodeDataMap"][choice_node]["optionList"]]
+        })
+
+    for event in activity_data["eventDataMap"]:
+        player_data["user"]["deepSea"]["events"].update({event: 1})
+
+    for treasure in activity_data["treasureNodeDataMap"]:
+        player_data["user"]["deepSea"]["treasures"].update({treasure: 1})
+
+    for story in activity_data["storyNodeDataMap"]:
+        player_data["user"]["deepSea"]["stories"].update({
+            activity_data["storyNodeDataMap"][story]["storyKey"]: 1
+        })
+
+    for tech in activity_data["techTreeDataMap"]:
+        player_data["user"]["deepSea"]["techTrees"].update({
+            tech: {
+                "state": 2,
+                "branch": activity_data["techTreeDataMap"][tech]["defaultBranchId"]
+            }
+        })
+
+    for log in activity_data["archiveItemUnlockDataMap"]:
+        if not log.startswith("act17side_log_"):
+            continue
+
+        chapter = activity_data["archiveItemUnlockDataMap"][log]["chapterId"]
+        if chapter in player_data["user"]["deepSea"]["logs"].keys():
+            player_data["user"]["deepSea"]["logs"][chapter].append(log)
+        else:
+            player_data["user"]["deepSea"]["logs"].update({chapter:[log]})
 
     # Check if mail exists
     for mailId in mail_data["mailList"]:

@@ -1,6 +1,8 @@
 BASE_URL = "https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/master/zh_CN/gamedata"
 
 # TABLE Urls
+ACTIVITY_TABLE_URL = BASE_URL + "/excel/activity_table.json"
+CHARM_TABLE_URL = BASE_URL + "/excel/charm_table.json"
 SKIN_TABLE_URL = BASE_URL + "/excel/skin_table.json"
 CHARACTER_TABLE_URL = BASE_URL + "/excel/character_table.json"
 BATTLEEQUIP_TABLE_URL = BASE_URL + "/excel/battle_equip_table.json"
