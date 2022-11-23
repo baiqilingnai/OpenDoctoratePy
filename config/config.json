@@ -31,5 +31,17 @@
             "is2": false,
             "squadsAndFavs": true
         }
+    },
+    "assetbundle": {
+        "enable": false,
+        "server": {
+            "url": "http://192.168.0.104:38660"
+        },
+        "version": {
+		"android": {
+			"resVersion": "22-11-22-10-24-31-71ede3",
+			"clientVersion": "1.9.21"
+            }
+        }
     }
 }

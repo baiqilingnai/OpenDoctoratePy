@@ -112,7 +112,7 @@ def main():
     }
 
     function init(){
-        var proxy_url = "192.168.86.243";
+        var proxy_url = "192.168.0.104";
         var proxy_port = 8080;
         var mitm_cert_location_on_device = "/storage/emulated/0/Pictures/mitmproxy-ca-cert.cer";
 
