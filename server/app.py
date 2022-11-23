@@ -2,8 +2,8 @@ from datetime import datetime
 
 from flask import Flask
 
-import account, background, building, campaignV2, char, charBuild, charm, crisis, \
-        deepsea, mail, online, quest, pay, rlv2, shop, story, user
+import account, background, building, campaignV2, char, charBuild, charm, config.prod, \
+        crisis, deepsea, mail, online, quest, pay, rlv2, shop, story, user
 
 app = Flask(__name__)
 port = 8443
@@ -33,6 +33,12 @@ app.add_url_rule('/charBuild/setEquipment', methods=['POST'], view_func=charBuil
 app.add_url_rule('/charBuild/changeCharTemplate', methods=['POST'], view_func=charBuild.charBuildChangeCharTemplate)
 
 app.add_url_rule('/charm/setSquad', methods=['POST'], view_func=charm.charmSetSquad)
+
+app.add_url_rule('/config/prod/announce_meta/Android/preannouncement.meta.json', methods=['GET'], view_func=config.prod.prodPreAnnouncement)
+app.add_url_rule('/config/prod/announce_meta/Android/announcement.meta.json', methods=['GET'], view_func=config.prod.prodAnnouncement)
+app.add_url_rule('/config/prod/official/Android/version', methods=['GET'], view_func=config.prod.prodAndroidVersion)
+app.add_url_rule('/config/prod/official/network_config', methods=['GET'], view_func=config.prod.prodNetworkConfig)
+app.add_url_rule('/config/prod/official/remote_config', methods=['GET'], view_func=config.prod.prodRemoteConfig)
 
 app.add_url_rule('/crisis/getInfo', methods=['POST'], view_func=crisis.crisisGetCrisisInfo)
 app.add_url_rule('/crisis/battleStart', methods=['POST'], view_func=crisis.crisisBattleStart)
