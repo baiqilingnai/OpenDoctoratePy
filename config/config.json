@@ -38,9 +38,15 @@
             "url": "http://192.168.0.104:38660"
         },
         "version": {
+<<<<<<< HEAD
             "android": {
                 "resVersion": "22-11-22-10-24-31-71ede3",
                 "clientVersion": "1.9.21"
+=======
+		"android": {
+			"resVersion": "22-11-22-10-24-31-71ede3",
+			"clientVersion": "1.9.21"
+>>>>>>> 67b50e97dc66a0da9073d2e34b44b0274a49e3b6
             }
         }
     }
