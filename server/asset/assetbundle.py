@@ -1,10 +1,10 @@
 import os
 import socket
-import requests
 import hashlib
+import requests
 
-from flask import make_response,request
 from datetime import datetime
+from flask import make_response
 from utils import read_json, write_json
 
 
@@ -17,23 +17,23 @@ def writeLog(data):
 def getFile(assetsHash, fileName):
     version = read_json('./config/config.json')["version"]["android"]["resVersion"]
         
-    filePath  = './assets/' + version + '/'
+    basePath  = './assets/' + version + '/'
 
-    if not os.path.isdir(filePath):
-        os.makedirs(filePath)
+    if not os.path.isdir(basePath):
+        os.makedirs(basePath)
 
-    newFile = filePath + fileName
+    filePath = basePath + fileName
 
-    if os.path.exists(newFile):
-        return export(newFile, assetsHash)
+    if os.path.exists(filePath):
+        return export(filePath, assetsHash)
 
     writeLog('\033[1;33mDownload {}\033[0;0m'.format(fileName))
 
-    downloadFile('https://ak.hycdn.cn/assetbundle/official/Android/assets/{}/{}'.format(version, fileName), newFile)
+    downloadFile('https://ak.hycdn.cn/assetbundle/official/Android/assets/{}/{}'.format(version, fileName), filePath)
 
-    if os.path.exists(newFile):
+    if os.path.exists(filePath):
         writeLog('/{}/{}'.format(version, fileName))
-        return export(newFile, assetsHash)
+        return export(filePath, assetsHash)
     
     return None
 
@@ -42,7 +42,7 @@ def downloadFile(url, filePath):
 
     header = {"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36 Edg/105.0.1343.53"}
 
-    file = requests.get(url, headers=header, timeout=3.0, stream=True)
+    file = requests.get(url, headers=header, timeout=3.0, stream=False) # Solve 'High Concurrency'
 
     with open(filePath, 'wb') as f:
         for chunk in file.iter_content(chunk_size=512):
@@ -67,7 +67,7 @@ def export(file, assetsHash):
     response.headers["content-type"] = "application/octet-stream"
     response.headers["expires"] = "0"
     response.headers["etag"] = hashlib.md5(file.encode('utf-8')).hexdigest()
-    response.headers["last-modified"] = datetime.now().strftime("%a, %d %b %Y %H:%M:%S %X GMT")
+    response.headers["last-modified"] = datetime.now()
     response.headers["pragma"] = "no-cache"
 
     if os.path.basename(file) == 'hot_update_list.json':
@@ -94,4 +94,3 @@ def export(file, assetsHash):
         write_json(hot_update_list, file)
 
     return response
- 

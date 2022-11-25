@@ -105,4 +105,4 @@ def writeLog(data):
 
 if __name__ == "__main__":
     writeLog('[SERVER] Server started at http://' + host + ":" + str(port))
-    app.run(host=host, port=port, debug=True, threaded = False, processes = 1)
+    app.run(host=host, port=port, debug=True)
