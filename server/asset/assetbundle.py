@@ -1,12 +1,15 @@
 import os
 import socket
 import hashlib
-import requests
-
 from datetime import datetime
-from flask import make_response
-from utils import read_json, write_json
 
+import requests
+from flask import Response, stream_with_context
+
+from constants import CONFIG_PATH
+from utils import read_json
+
+header = {"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36 Edg/105.0.1343.53"}
 
 def writeLog(data):
     time = datetime.now().strftime("%d/%b/%Y %H:%M:%S")
@@ -15,82 +18,75 @@ def writeLog(data):
 
 
 def getFile(assetsHash, fileName):
-    version = read_json('./config/config.json')["version"]["android"]["resVersion"]
-        
-    basePath  = './assets/' + version + '/'
+    version = read_json(CONFIG_PATH)["version"]["android"]["resVersion"]
+    basePath  = os.path.join('.', 'assets', version)
 
     if not os.path.isdir(basePath):
         os.makedirs(basePath)
+    filePath = os.path.join(basePath, fileName)
 
-    filePath = basePath + fileName
+    wrongSize = False
+    if not os.path.basename(fileName) == 'hot_update_list.json':
+        temp_hot_update_path = os.path.join(basePath, "hot_update_list.json")
+        hot_update = read_json(temp_hot_update_path)
+        if os.path.exists(filePath):
+            for pack in hot_update["packInfos"]:
+                if pack["name"] == fileName.rsplit(".", 1)[0]:
+                    wrongSize = os.path.getsize(filePath) != pack["totalSize"]
+                    break
 
-    if os.path.exists(filePath):
-        return export(filePath, assetsHash)
-
-    writeLog('\033[1;33mDownload {}\033[0;0m'.format(fileName))
-
-    downloadFile('https://ak.hycdn.cn/assetbundle/official/Android/assets/{}/{}'.format(version, fileName), filePath)
-
-    if os.path.exists(filePath):
-        writeLog('/{}/{}'.format(version, fileName))
-        return export(filePath, assetsHash)
-    
-    return None
+    writeLog('/{}/{}'.format(version, fileName))
+    return export('https://ak.hycdn.cn/assetbundle/official/Android/assets/{}/{}'.format(version, fileName), filePath, wrongSize)
 
 
 def downloadFile(url, filePath):
 
-    header = {"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36 Edg/105.0.1343.53"}
-
-    file = requests.get(url, headers=header, timeout=3.0, stream=False) # Solve 'High Concurrency'
+    writeLog('\033[1;33mDownload {}\033[0;0m'.format(os.path.basename(filePath)))
+    file = requests.get(url, headers=header, stream=True)
 
     with open(filePath, 'wb') as f:
         for chunk in file.iter_content(chunk_size=512):
-            if chunk:
-                f.write(chunk)
-
-    return None
+            f.write(chunk)
+            yield chunk
 
 
-def export(file, assetsHash):
-    
-    if file == None:
-        return None
+def export(url, filePath, redownload = False):
 
-    with open(file, 'rb') as f:
-        data = f.read()
+    headers = {
+        "cache-control": "no-cache, no-store, must-revalidate",
+        "content-disposition": "attachment; filename=" + os.path.basename(filePath),
+        "content-type": "application/octet-stream",
+        "expires": "0",
+        "etag": hashlib.md5(filePath.encode('utf-8')).hexdigest(),
+        "last-modified": datetime.now(),
+        "pragma": "no-cache"
+    }
 
-    response = make_response(data)
-    response.headers["cache-control"] = "no-cache, no-store, must-revalidate"
-    response.headers["content-disposition"] = "attachment; filename=" + os.path.basename(file)
-    response.headers["content-length"] = os.path.getsize(file)
-    response.headers["content-type"] = "application/octet-stream"
-    response.headers["expires"] = "0"
-    response.headers["etag"] = hashlib.md5(file.encode('utf-8')).hexdigest()
-    response.headers["last-modified"] = datetime.now()
-    response.headers["pragma"] = "no-cache"
-
-    if os.path.basename(file) == 'hot_update_list.json':
-        if os.path.exists(file):
-            hot_update_list = read_json(file)
-        else:
-            hot_update_list = requests.get('https://ak.hycdn.cn/assetbundle/official/Android/assets/{}/hot_update_list.json'.format(assetsHash)).json()
-            
-        abInfoList = hot_update_list["abInfos"]
-        newAbInfos = []
-        ######## TODO: Add mods ########
-        modsList = []
+    if os.path.exists(filePath) and not redownload:
+        with open(filePath, "rb") as f:
+            data = f.read()
         
-        for abInfo in abInfoList:
-            if abInfo["name"] not in modsList:
-                newAbInfos.append(abInfo)
-        i = 0
-        while i < len(modsList):
-            newAbInfos.append(modsList[i])
-            i += 1
-        ######## TODO: Add mods ########
+        headers["content-length"] = os.path.getsize(filePath)
+        return Response(
+            data,
+            headers=headers
+        )
 
-        hot_update_list["abInfos"] = newAbInfos
-        write_json(hot_update_list, file)
+    file = requests.head(url, headers=header)
+    total_size_in_bytes = int(file.headers.get('Content-length', 0))
+    headers["content-length"] = total_size_in_bytes
 
-    return response
+    if os.path.basename(filePath) == 'hot_update_list.json':
+        file = requests.get(url, headers=header)
+        with open(filePath, 'wb') as f:
+            f.write(file.content)
+        
+        return Response(
+            file.content,
+            headers=headers
+        )
+            
+    return Response(
+        stream_with_context(downloadFile(url, filePath)),
+        headers=headers
+    )

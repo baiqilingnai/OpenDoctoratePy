@@ -1,6 +1,12 @@
 import sys
 from base64 import b64decode
+
 import frida
+
+from server.constants import CONFIG_PATH
+from server.utils import read_json
+
+HOST = read_json(CONFIG_PATH)["server"]["host"]
 
 def on_message(message, data):
     print("[%s] => %s" % (message, data))
@@ -12,36 +18,36 @@ def main():
     session = device.attach(pid)
     script = session.create_script("""
 
-    function redirect_traffic_to_proxy(proxy_url, proxy_port) {
-        Java.perform(function (){
+    function redirect_traffic_to_proxy(proxy_url, proxy_port) {{
+        Java.perform(function (){{
             console.log("[.] Traffic Redirection");
             var url = Java.use("java.net.URL");
             var proxyTypeI = Java.use('java.net.Proxy$Type');
             var inetSockAddrWrap = Java.use("java.net.InetSocketAddress");
             var proxy = Java.use('java.net.Proxy');
 
-            url.$init.overload('java.lang.String').implementation = function (var0) {
+            url.$init.overload('java.lang.String').implementation = function (var0) {{
                 //console.log("[*] Created new URL with value: " + var0);
                 return this.$init(var0);
-            };
+            }};
 
-            url.openConnection.overload().implementation = function () {
+            url.openConnection.overload().implementation = function () {{
                 var proxyImpl;
 
-                try{
+                try{{
                     proxyImpl = proxy.$new(proxyTypeI.valueOf('HTTP'), inetSockAddrWrap.$new(proxy_url, proxy_port));
-                }
-                catch(e){
+                }}
+                catch(e){{
                     console.log(e);
-                }
+                }}
 
                 return this.openConnection(proxyImpl);
-            };
-        });
-    }
+            }};
+        }});
+    }}
 
-    function replace_cert(mitm_cert_location){
-        Java.perform(function (){
+    function replace_cert(mitm_cert_location){{
+        Java.perform(function (){{
             console.log("[.] Cert Pinning Bypass/Re-Pinning");
 
             var CertificateFactory = Java.use("java.security.cert.CertificateFactory");
@@ -56,12 +62,12 @@ def main():
             console.log("[+] Loading our CA...")
             var cf = CertificateFactory.getInstance("X.509");
             
-            try {
+            try {{
                 var fileInputStream = FileInputStream.$new(mitm_cert_location);
-            }
-            catch(err) {
+            }}
+            catch(err) {{
                 console.log("[o] " + err);
-            }
+            }}
             
             var bufferedInputStream = BufferedInputStream.$new(fileInputStream);
             var ca = cf.generateCertificate(bufferedInputStream);
@@ -87,46 +93,46 @@ def main():
             console.log("[+] Hijacking SSLContext methods now...")
             console.log("[-] Waiting for the app to invoke SSLContext.init()...")
 
-            SSLContext.init.overload("[Ljavax.net.ssl.KeyManager;", "[Ljavax.net.ssl.TrustManager;", "java.security.SecureRandom").implementation = function(a,b,c) {
+            SSLContext.init.overload("[Ljavax.net.ssl.KeyManager;", "[Ljavax.net.ssl.TrustManager;", "java.security.SecureRandom").implementation = function(a,b,c) {{
                 SSLContext.init.overload("[Ljavax.net.ssl.KeyManager;", "[Ljavax.net.ssl.TrustManager;", "java.security.SecureRandom").call(this, a, tmf.getTrustManagers(), c);
-            }
+            }}
             console.log("[o] Cert Pinning Bypass/Re-Pinning Done!");
-        });
-    }
+        }});
+    }}
 
-    function get_func_by_offset(offset){
+    function get_func_by_offset(offset){{
         var module = Process.getModuleByName("libil2cpp.so");
         var addr = module.base.add(offset);
         return new NativePointer(addr.toString());
-    }
+    }}
 
-    function hookTrue(address) {
+    function hookTrue(address) {{
         var func = get_func_by_offset(address);
         console.log('[+] Hooked function: ' + func.toString());
-        Interceptor.attach(func,{
-            onEnter: function(args){},
-            onLeave: function(retval){
+        Interceptor.attach(func,{{
+            onEnter: function(args){{}},
+            onLeave: function(retval){{
                 retval.replace(0x1);
-            }
-        });
-    }
+            }}
+        }});
+    }}
 
-    function init(){
-        var proxy_url = "192.168.0.104";
+    function init(){{
+        var proxy_url = "{HOST}";
         var proxy_port = 8080;
         var mitm_cert_location_on_device = "/storage/emulated/0/Pictures/mitmproxy-ca-cert.cer";
 
-        setTimeout(function() {
+        setTimeout(function() {{
             [0xd281e3, 0x35795a9, 0x469af22].forEach(hookTrue);
-        }, 6000)
+        }}, 6000)
 
         redirect_traffic_to_proxy(proxy_url, proxy_port);
         replace_cert(mitm_cert_location_on_device);	
-    }
+    }}
 
     init();
 
-""")
+""".format(HOST=HOST))
     script.on('message', on_message)
     script.load()
     print("[!] Ctrl+D on UNIX, Ctrl+Z on Windows/cmd.exe to detach from instrumented program.\n\n")

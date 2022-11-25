@@ -13,7 +13,8 @@ class AKRedirect:
         'android.bugly.qq.com',
         'ak-conf.hypergryph.com',
         'bi-track.hypergryph.com',
-        'down.anticheatexpert.com'
+        'down.anticheatexpert.com',
+        'log.trackingio.com'
     ]
 
     def __init__(self):
@@ -23,15 +24,13 @@ class AKRedirect:
         for domain in self.DOMAINS_LIST:
             if domain in flow.request.pretty_host:
                 if domain == 'ak-conf.hypergryph.com':
+                    flow.request.scheme = 'http'
                     flow.request.host = host
+                    flow.request.port = port
                 else:
                     flow.request.host = '0.0.0.0'
 
-    def request(self, flow: mitmproxy.http.HTTPFlow):
-        if 'ak-conf.hypergryph.com' in flow.request.pretty_host:
-            flow.request.scheme = 'http'
-            flow.request.host = host
-            flow.request.port = port
+    request = http_connect
 
 addons = [
     AKRedirect()

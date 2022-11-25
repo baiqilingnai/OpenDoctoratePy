@@ -9,6 +9,10 @@ test.py
 mitmproxy-cn1.py
 integrated_strategy.md
 
+# Data files
+data/excel/
+assets/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

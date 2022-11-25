@@ -43,13 +43,16 @@ def mailListMailBox():
 
     data = request.data
     mails = []
-    statesList = []
+    hasGift = 0
     mail_data = read_json(MAILLIST_PATH, encoding="utf-8")
 
     for mailId in mail_data["mailList"]:
 
         if int(mailId) in mail_data["deletedIDs"]:
             continue
+
+        if int(mailId) not in mail_data["recievedIDs"]:
+            hasGift = 1
 
         config = {
             "createAt": round(time()),
@@ -62,7 +65,6 @@ def mailListMailBox():
             "uid": ""
         }
 
-        statesList.append(config["state"])
         mails.append(dict(mail_data["mailList"][str(mailId)], **config))
 
     data = {
@@ -70,7 +72,7 @@ def mailListMailBox():
         "playerDataDelta": {
             "modified": {
                 "pushFlags": {
-                    "hasGifts": 1 if 0 in set(statesList) else 0
+                    "hasGifts": hasGift
                 }
             },
             "deleted": {}
