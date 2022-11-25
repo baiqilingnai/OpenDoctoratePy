@@ -19,6 +19,7 @@ app.add_url_rule('/building/sync', methods=['POST'], view_func=building.building
 
 app.add_url_rule('/campaignV2/battleStart', methods=['POST'], view_func=campaignV2.campaignV2BattleStart)
 app.add_url_rule('/campaignV2/battleFinish', methods=['POST'], view_func=campaignV2.campaignV2BattleFinish)
+app.add_url_rule('/campaignV2/battleSweep', methods=['POST'], view_func=campaignV2.campaignV2BattleSweep)
 
 app.add_url_rule('/char/changeMarkStar', methods=['POST'], view_func=char.charChangeMarkStar)
 

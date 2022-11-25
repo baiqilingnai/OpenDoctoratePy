@@ -37,3 +37,32 @@ def campaignV2BattleFinish():
 
     return data
 
+
+def campaignV2BattleSweep():
+
+    data = request.data
+    data = {
+        "result": 0,
+        "apFailReturn": 1,
+        "rewards": [],
+        "unlockStages": [],
+        "unusualRewards": [],
+        "additionalRewards": [],
+        "furnitureRewards": [],
+        "diamondMaterialRewards": [
+            {
+                "type": "DIAMOND_SHD",
+                "id": "4003",
+                "count": 1
+            }
+        ],
+        "currentFeeBefore": 0,
+        "currentFeeAfter": 1,
+        "playerDataDelta": {
+            "modified": {},
+            "deleted": {}
+        }
+    }
+
+    return data
+
