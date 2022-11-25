@@ -1,28 +1,37 @@
 import json
-import base64
 import mitmproxy.http
+
+server = json.load(open('./config/config.json', 'r'))["server"]
+
+host = server["host"]
+port = server["port"]
 
 
 class AKRedirect:
+
+    DOMAINS_LIST = [
+        'android.bugly.qq.com',
+        'ak-conf.hypergryph.com',
+        'bi-track.hypergryph.com',
+        'down.anticheatexpert.com'
+    ]
 
     def __init__(self):
         print('Addon for Redirecting Arknight [EN] Loaded !')
 
     def http_connect(self, flow: mitmproxy.http.HTTPFlow):
-        if 'ak-conf.hypergryph.com' in flow.request.pretty_host:
-            flow.request.scheme = 'http'
-            flow.request.host = "127.0.0.1"
-            flow.request.port = 8443
+        for domain in self.DOMAINS_LIST:
+            if domain in flow.request.pretty_host:
+                if domain == 'ak-conf.hypergryph.com':
+                    flow.request.host = host
+                else:
+                    flow.request.host = '0.0.0.0'
 
     def request(self, flow: mitmproxy.http.HTTPFlow):
-        if 'bi-track.hypergryph.com' in flow.request.pretty_host:
-            flow.request.scheme = 'http'
-            flow.request.host = "127.0.0.1"
-
         if 'ak-conf.hypergryph.com' in flow.request.pretty_host:
             flow.request.scheme = 'http'
-            flow.request.host = "127.0.0.1"
-            flow.request.port = 8443
+            flow.request.host = host
+            flow.request.port = port
 
 addons = [
     AKRedirect()

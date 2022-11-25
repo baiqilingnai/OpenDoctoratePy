@@ -23,6 +23,5 @@ IF '%errorlevel%' NEQ '0' (
 
 start cmd.exe /c "start_mitmproxy.bat"
 start cmd.exe /c "start_local_server.bat"
-start cmd.exe /c "start_assetbundle.bat"
 start cmd.exe /c "start_frida-server.bat"
 start cmd.exe /c "start_frida-hook.bat"

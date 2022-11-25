@@ -1,42 +1,39 @@
 import os
-import json
 import socket
-import requests
 import hashlib
+import requests
 
-from flask import Flask, make_response
 from datetime import datetime
-from gevent import pywsgi
- 
-app = Flask(__name__)
-os.system("")
+from flask import make_response
+from utils import read_json, write_json
 
 
-@app.route('/assetbundle/official/Android/assets/<string:assetsHash>/<string:fileName>', methods=["GET"])
-def getFile(assetsHash, fileName):
-
-    with open('./config/config.json') as f:
-        version = json.load(f)["assetbundle"]["version"]["android"]["resVersion"]
-        
-    time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+def writeLog(data):
+    time = datetime.now().strftime("%d/%b/%Y %H:%M:%S")
     clientIp = socket.gethostbyname(socket.gethostname())
-    filePath  = './assets/' + version + '/'
-
-    if not os.path.isdir(filePath):
-        os.makedirs(filePath)
-
-    newFile = filePath + fileName
-
-    if os.path.exists(newFile):
-        return exportFile(newFile, assetsHash)
+    print(f'{clientIp} - - [{time}] {data}')
 
 
-    print('\033[1;33m{} - - [{}] Download {}\033[0;0m'.format(clientIp, time, fileName))
-    downloadFile('https://ak.hycdn.cn/assetbundle/official/Android/assets/{}/{}'.format(version, fileName), newFile)
+def getFile(assetsHash, fileName):
+    version = read_json('./config/config.json')["version"]["android"]["resVersion"]
+        
+    basePath  = './assets/' + version + '/'
 
-    if os.path.exists(newFile):
-        print('{} - - [{}] /{}/{}'.format(clientIp, time, version, fileName))
-        return exportFile(newFile, assetsHash)
+    if not os.path.isdir(basePath):
+        os.makedirs(basePath)
+
+    filePath = basePath + fileName
+
+    if os.path.exists(filePath):
+        return export(filePath, assetsHash)
+
+    writeLog('\033[1;33mDownload {}\033[0;0m'.format(fileName))
+
+    downloadFile('https://ak.hycdn.cn/assetbundle/official/Android/assets/{}/{}'.format(version, fileName), filePath)
+
+    if os.path.exists(filePath):
+        writeLog('/{}/{}'.format(version, fileName))
+        return export(filePath, assetsHash)
     
     return None
 
@@ -45,7 +42,7 @@ def downloadFile(url, filePath):
 
     header = {"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36 Edg/105.0.1343.53"}
 
-    file = requests.get(url, headers=header, timeout=3.0, stream=True)
+    file = requests.get(url, headers=header, timeout=3.0, stream=False) # Solve 'High Concurrency'
 
     with open(filePath, 'wb') as f:
         for chunk in file.iter_content(chunk_size=512):
@@ -55,7 +52,7 @@ def downloadFile(url, filePath):
     return None
 
 
-def exportFile(file, assetsHash):
+def export(file, assetsHash):
     
     if file == None:
         return None
@@ -70,31 +67,30 @@ def exportFile(file, assetsHash):
     response.headers["content-type"] = "application/octet-stream"
     response.headers["expires"] = "0"
     response.headers["etag"] = hashlib.md5(file.encode('utf-8')).hexdigest()
-    response.headers["last-modified"] = datetime.now().strftime("%a, %d %b %Y %H:%M:%S %X GMT")
+    response.headers["last-modified"] = datetime.now()
     response.headers["pragma"] = "no-cache"
 
     if os.path.basename(file) == 'hot_update_list.json':
         if os.path.exists(file):
-            with open(file, 'r') as f:
-                hot_update_list = json.load(f)
+            hot_update_list = read_json(file)
         else:
             hot_update_list = requests.get('https://ak.hycdn.cn/assetbundle/official/Android/assets/{}/hot_update_list.json'.format(assetsHash)).json()
             
         abInfoList = hot_update_list["abInfos"]
         newAbInfos = []
         ######## TODO: Add mods ########
+        modsList = []
+        
         for abInfo in abInfoList:
-            newAbInfos.append(abInfo)
+            if abInfo["name"] not in modsList:
+                newAbInfos.append(abInfo)
+        i = 0
+        while i < len(modsList):
+            newAbInfos.append(modsList[i])
+            i += 1
         ######## TODO: Add mods ########
+
         hot_update_list["abInfos"] = newAbInfos
-        with open(file, 'w') as f:
-            json.dump(hot_update_list,f)
+        write_json(hot_update_list, file)
 
     return response
- 
-
-if __name__ == "__main__":
-    print('Local AssetBundle Server')
-    server = pywsgi.WSGIServer(('0.0.0.0', 38660), app)
-    server.serve_forever()
- 
