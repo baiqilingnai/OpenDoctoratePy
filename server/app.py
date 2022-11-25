@@ -1,17 +1,25 @@
 from datetime import datetime
 
 from flask import Flask
+from utils import read_json
+from constants import CONFIG_PATH
 
-import account, background, building, campaignV2, char, charBuild, charm, config.prod, \
-        crisis, deepsea, mail, online, quest, pay, rlv2, shop, story, user
+import account, background, building, campaignV2, char, charBuild, charm, \
+        crisis, deepsea, mail, online, quest, pay, rlv2, shop, story, user, \
+        asset.assetbundle, config.prod
+
+server_config = read_json(CONFIG_PATH)
 
 app = Flask(__name__)
-port = 8443
+host = server_config["server"]["host"]
+port = server_config["server"]["port"]
 
 
 app.add_url_rule('/account/login', methods=['POST'], view_func=account.accountLogin)
 app.add_url_rule('/account/syncData', methods=['POST'], view_func=account.accountSyncData)
 app.add_url_rule('/account/syncStatus', methods=['POST'], view_func=account.accountSyncStatus)
+
+app.add_url_rule('/assetbundle/official/Android/assets/<string:assetsHash>/<string:fileName>', methods=['GET'], view_func=asset.assetbundle.getFile)
 
 app.add_url_rule('/background/setBackground', methods=['POST'], view_func=background.backgroundSetBackground)
 
@@ -96,5 +104,5 @@ def writeLog(data):
     print(f'[{datetime.utcnow()}] {data}')
 
 if __name__ == "__main__":
-    writeLog('[SERVER] Server started at port ' + str(port))
-    app.run(port=port, debug=True)
+    writeLog('[SERVER] Server started at http://' + host + ":" + str(port))
+    app.run(host=host, port=port, debug=True, threaded = False, processes = 1)

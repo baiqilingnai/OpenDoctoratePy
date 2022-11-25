@@ -1,25 +1,22 @@
 import os
-import json
 import socket
 import requests
 import hashlib
 
-from flask import Flask, make_response
+from flask import make_response,request
 from datetime import datetime
-from gevent import pywsgi
- 
-app = Flask(__name__)
-os.system("")
+from utils import read_json, write_json
 
 
-@app.route('/assetbundle/official/Android/assets/<string:assetsHash>/<string:fileName>', methods=["GET"])
-def getFile(assetsHash, fileName):
-
-    with open('./config/config.json') as f:
-        version = json.load(f)["assetbundle"]["version"]["android"]["resVersion"]
-        
-    time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+def writeLog(data):
+    time = datetime.now().strftime("%d/%b/%Y %H:%M:%S")
     clientIp = socket.gethostbyname(socket.gethostname())
+    print(f'{clientIp} - - [{time}] {data}')
+
+
+def getFile(assetsHash, fileName):
+    version = read_json('./config/config.json')["version"]["android"]["resVersion"]
+        
     filePath  = './assets/' + version + '/'
 
     if not os.path.isdir(filePath):
@@ -28,15 +25,15 @@ def getFile(assetsHash, fileName):
     newFile = filePath + fileName
 
     if os.path.exists(newFile):
-        return exportFile(newFile, assetsHash)
+        return export(newFile, assetsHash)
 
+    writeLog('\033[1;33mDownload {}\033[0;0m'.format(fileName))
 
-    print('\033[1;33m{} - - [{}] Download {}\033[0;0m'.format(clientIp, time, fileName))
     downloadFile('https://ak.hycdn.cn/assetbundle/official/Android/assets/{}/{}'.format(version, fileName), newFile)
 
     if os.path.exists(newFile):
-        print('{} - - [{}] /{}/{}'.format(clientIp, time, version, fileName))
-        return exportFile(newFile, assetsHash)
+        writeLog('/{}/{}'.format(version, fileName))
+        return export(newFile, assetsHash)
     
     return None
 
@@ -55,7 +52,7 @@ def downloadFile(url, filePath):
     return None
 
 
-def exportFile(file, assetsHash):
+def export(file, assetsHash):
     
     if file == None:
         return None
@@ -75,26 +72,26 @@ def exportFile(file, assetsHash):
 
     if os.path.basename(file) == 'hot_update_list.json':
         if os.path.exists(file):
-            with open(file, 'r') as f:
-                hot_update_list = json.load(f)
+            hot_update_list = read_json(file)
         else:
             hot_update_list = requests.get('https://ak.hycdn.cn/assetbundle/official/Android/assets/{}/hot_update_list.json'.format(assetsHash)).json()
             
         abInfoList = hot_update_list["abInfos"]
         newAbInfos = []
         ######## TODO: Add mods ########
+        modsList = []
+        
         for abInfo in abInfoList:
-            newAbInfos.append(abInfo)
+            if abInfo["name"] not in modsList:
+                newAbInfos.append(abInfo)
+        i = 0
+        while i < len(modsList):
+            newAbInfos.append(modsList[i])
+            i += 1
         ######## TODO: Add mods ########
+
         hot_update_list["abInfos"] = newAbInfos
-        with open(file, 'w') as f:
-            json.dump(hot_update_list,f)
+        write_json(hot_update_list, file)
 
     return response
- 
-
-if __name__ == "__main__":
-    print('Local AssetBundle Server')
-    server = pywsgi.WSGIServer(('0.0.0.0', 38660), app)
-    server.serve_forever()
  

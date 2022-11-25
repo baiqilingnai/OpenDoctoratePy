@@ -1,4 +1,62 @@
 {
+    "server": {
+        "host": "192.168.0.104",
+        "port": 8443,
+        "enableServer": true,
+        "maintenanceMsg": "Server is currently under maintenance!"
+    },
+    "assets": {
+        "autoUpdate": true,
+        "enableRedirect": true,
+        "enableMods": false
+    },
+    "version": {
+        "android": {
+            "resVersion": "22-11-22-10-24-31-71ede3",
+            "clientVersion": "1.9.21"
+        }
+    },
+    "remote": {
+        "enableGameBI": false,
+        "enableSDKNetSecure": true,
+        "enableBestHttp": true
+    },
+    "networkConfig": {
+        "sign": "sign",
+        "content": {
+            "configVer": "5",
+            "funcVer": "V033",
+            "configs": {
+                "V033": {
+                    "override": true,
+                    "network": {
+                        "gs": "{server}",
+                        "as": "{server}",
+                        "u8": "{server}/u8",
+                        "hu": "{server}/assetbundle/official",
+                        "hv": "{server}/config/prod/official/{0}/version",
+                        "rc": "{server}/config/prod/official/remote_config",
+                        "an": "{server}/config/prod/announce_meta/{0}/announcement.meta.json",
+                        "prean": "{server}/config/prod/announce_meta/{0}/preannouncement.meta.json",
+                        "sl": "https://ak.hypergryph.com/protocol/service",
+                        "of": "https://ak.hypergryph.com/index.html",
+                        "pkgAd": null,
+                        "pkgIOS": null,
+                        "secure": false
+                    }
+                }
+            }
+        }
+    },
+    "crisisConfig": {
+        "selectedCrisis": null
+    },
+    "userConfig": {
+        "restorePreviousStates": {
+            "is2": false,
+            "squadsAndFavs": true
+        }
+    },
     "charConfig": {
         "favorPoint": 25570,
         "potentialRank": 5,
@@ -13,7 +71,10 @@
                 "mainSkillLvl": 7,
                 "level": 50,
                 "evolvePhase": 1,
-                "skills": [1, 0]
+                "skills": [
+                    1,
+                    0
+                ]
             }
         },
         "duplicateUnits": [],
@@ -21,33 +82,6 @@
             "charId": "char_350_surtr",
             "skinId": "char_350_surtr@it#1",
             "skillIndex": 2
-        }
-    },
-    "crisisConfig": {
-        "selectedCrisis": null
-    },
-    "userConfig": {
-        "restorePreviousStates": {
-            "is2": false,
-            "squadsAndFavs": true
-        }
-    },
-    "assetbundle": {
-        "enable": false,
-        "server": {
-            "url": "http://192.168.0.104:38660"
-        },
-        "version": {
-<<<<<<< HEAD
-            "android": {
-                "resVersion": "22-11-22-10-24-31-71ede3",
-                "clientVersion": "1.9.21"
-=======
-		"android": {
-			"resVersion": "22-11-22-10-24-31-71ede3",
-			"clientVersion": "1.9.21"
->>>>>>> 67b50e97dc66a0da9073d2e34b44b0274a49e3b6
-            }
         }
     }
 }
