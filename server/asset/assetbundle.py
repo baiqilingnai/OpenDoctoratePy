@@ -7,7 +7,7 @@ import requests
 from flask import Response, stream_with_context
 
 from constants import CONFIG_PATH
-from utils import read_json
+from utils import read_json, write_json
 
 header = {"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36 Edg/105.0.1343.53"}
 
@@ -62,6 +62,41 @@ def export(url, filePath, redownload = False):
         "pragma": "no-cache"
     }
 
+    file = requests.head(url, headers=header)
+    total_size_in_bytes = int(file.headers.get('Content-length', 0))
+    headers["content-length"] = total_size_in_bytes
+
+    if os.path.basename(filePath) == 'hot_update_list.json':
+        
+        if os.path.exists(filePath):
+            hot_update_list = read_json(filePath)
+        else:
+            hot_update_list = requests.get(url, headers=header).json()
+            
+        abInfoList = hot_update_list["abInfos"]
+        newAbInfos = []
+        ######## TODO: Add mods ########
+        modsList = []
+        
+        for abInfo in abInfoList:
+            if abInfo["name"] not in modsList:
+                newAbInfos.append(abInfo)
+        i = 0
+        while i < len(modsList):
+            newAbInfos.append(modsList[i])
+            i += 1
+        ######## TODO: Add mods ########
+        hot_update_list["abInfos"] = newAbInfos
+        write_json(hot_update_list, filePath)
+
+        with open(filePath, 'wb') as f:
+            data = f.read()
+        
+        return Response(
+            data,
+            headers=headers
+        )
+
     if os.path.exists(filePath) and not redownload:
         with open(filePath, "rb") as f:
             data = f.read()
@@ -69,20 +104,6 @@ def export(url, filePath, redownload = False):
         headers["content-length"] = os.path.getsize(filePath)
         return Response(
             data,
-            headers=headers
-        )
-
-    file = requests.head(url, headers=header)
-    total_size_in_bytes = int(file.headers.get('Content-length', 0))
-    headers["content-length"] = total_size_in_bytes
-
-    if os.path.basename(filePath) == 'hot_update_list.json':
-        file = requests.get(url, headers=header)
-        with open(filePath, 'wb') as f:
-            f.write(file.content)
-        
-        return Response(
-            file.content,
             headers=headers
         )
             
