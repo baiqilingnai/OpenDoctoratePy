@@ -1,9 +1,9 @@
 import re
 import json
-import requests
 
 from constants import CONFIG_PATH
 from utils import read_json, write_json
+from core.function.update import updateData
 
 
 def prodAndroidVersion():
@@ -22,7 +22,7 @@ def prodNetworkConfig():
     funcVer = network_config["content"]["funcVer"]
 
     if server_config["assets"]["autoUpdate"]:
-        version = requests.get("https://ak-conf.hypergryph.com/config/prod/official/Android/version").json()
+        version = updateData("https://ak-conf.hypergryph.com/config/prod/official/Android/version")
         server_config["version"]["android"] = version
 
         write_json(server_config, CONFIG_PATH)
@@ -55,15 +55,13 @@ def prodRemoteConfig():
 
 def prodPreAnnouncement():
 
-    # data = read_json('./data/announce/preannouncement.meta.json', encoding='utf-8')
-    data = requests.get("https://ak-conf.hypergryph.com/config/prod/announce_meta/Android/preannouncement.meta.json").json()
+    data = updateData("https://ak-conf.hypergryph.com/config/prod/announce_meta/Android/preannouncement.meta.json")
 
     return data
 
 
 def prodAnnouncement():
 
-    # data = read_json('./data/announce/announcement.meta.json', encoding='utf-8')
-    data = requests.get("https://ak-conf.hypergryph.com/config/prod/announce_meta/Android/announcement.meta.json").json()
+    data = updateData("https://ak-conf.hypergryph.com/config/prod/announce_meta/Android/announcement.meta.json")
 
     return data

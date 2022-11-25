@@ -6,9 +6,11 @@ import requests
 from constants import RL_TABLE_URL, CHARACTER_TABLE_URL, USER_JSON_PATH, \
                     RLV2_TEMPBUFF_JSON_PATH, RLV2_NODESINFO, RLV2_CONFIG_PATH
 from utils import read_json
+from core.function.update import updateData
 
-RL_TABLE = requests.get(RL_TABLE_URL).json()
-CHARACTER_TABLE = requests.get(CHARACTER_TABLE_URL).json()
+RL_TABLE = updateData(RL_TABLE_URL)
+CHARACTER_TABLE = updateData(CHARACTER_TABLE_URL)
+
 POPULATION_RECRUIT_MAP = {
     "0": 0,
     "1": 0,

@@ -4,8 +4,6 @@ from time import time
 from copy import deepcopy
 from base64 import b64encode
 from hashlib import md5
-
-import requests
 from flask import request
 
 from constants import USER_JSON_PATH, CONFIG_PATH, BATTLE_REPLAY_JSON_PATH, \
@@ -13,6 +11,7 @@ from constants import USER_JSON_PATH, CONFIG_PATH, BATTLE_REPLAY_JSON_PATH, \
                     SYNC_DATA_TEMPLATE_PATH, BATTLEEQUIP_TABLE_URL, DM_TABLE_URL, RETRO_TABLE_URL, \
                     HANDBOOK_INFO_TABLE_URL, MAILLIST_PATH, CHARM_TABLE_URL, ACTIVITY_TABLE_URL
 from utils import read_json, write_json
+from core.function.update import updateData
 
 def accountLogin():
 
@@ -40,14 +39,14 @@ def accountSyncData():
     config = read_json(CONFIG_PATH)
 
     # Load newest data
-    data_skin = requests.get(SKIN_TABLE_URL).json()
-    character_table = requests.get(CHARACTER_TABLE_URL).json()
-    equip_table = requests.get(EQUIP_TABLE_URL).json()
-    battle_equip_table = requests.get(BATTLEEQUIP_TABLE_URL).json()
-    display_meta_table = requests.get(DM_TABLE_URL).json()
-    retro_table = requests.get(RETRO_TABLE_URL).json()
-    charm_table = requests.get(CHARM_TABLE_URL).json()
-    activity_table = requests.get(ACTIVITY_TABLE_URL).json()
+    data_skin = updateData(SKIN_TABLE_URL)
+    character_table = updateData(CHARACTER_TABLE_URL)
+    equip_table = updateData(EQUIP_TABLE_URL)
+    battle_equip_table = updateData(BATTLEEQUIP_TABLE_URL)
+    display_meta_table = updateData(DM_TABLE_URL)
+    retro_table = updateData(RETRO_TABLE_URL)
+    charm_table = updateData(CHARM_TABLE_URL)
+    activity_table = updateData(ACTIVITY_TABLE_URL)
 
     ts = round(time())
     cnt = 0
@@ -263,7 +262,7 @@ def accountSyncData():
 
     # Tamper story
     myStoryList = {"init": 1}
-    story_table = requests.get(STORY_TABLE_URL).json()
+    story_table = updateData(STORY_TABLE_URL)
     for story in story_table:
         myStoryList.update({story:1})
 
@@ -271,7 +270,7 @@ def accountSyncData():
 
     # Tamper Stages
     myStageList = {}
-    stage_table = requests.get(STAGE_TABLE_URL).json()
+    stage_table = updateData(STAGE_TABLE_URL)
     for stage in stage_table["stages"]:
         myStageList.update({
             stage: {
@@ -289,7 +288,7 @@ def accountSyncData():
 
     # Tamper addon [paradox&records]
     addonList = {}
-    addon_table = requests.get(HANDBOOK_INFO_TABLE_URL).json()
+    addon_table = updateData(HANDBOOK_INFO_TABLE_URL)
     for charId in addon_table["handbookDict"]:
         addonList[charId] = {"story":{}}
         story = addon_table["handbookDict"][charId]["handbookAvgList"]
