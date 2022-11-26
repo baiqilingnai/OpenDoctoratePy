@@ -1,8 +1,6 @@
 from time import time
 from random import choice, choices, random
 
-import requests
-
 from constants import RL_TABLE_URL, CHARACTER_TABLE_URL, USER_JSON_PATH, \
                     RLV2_TEMPBUFF_JSON_PATH, RLV2_NODESINFO, RLV2_CONFIG_PATH
 from utils import read_json

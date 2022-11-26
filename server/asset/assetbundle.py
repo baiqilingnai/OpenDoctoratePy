@@ -4,7 +4,7 @@ import hashlib
 from datetime import datetime
 
 import requests
-from flask import Response, stream_with_context
+from flask import Response, stream_with_context, make_response
 
 from constants import CONFIG_PATH
 from utils import read_json, write_json
@@ -62,6 +62,13 @@ def export(url, filePath, redownload = False):
         "pragma": "no-cache"
     }
 
+    if os.path.exists(filePath) and redownload == False:
+        with open(filePath, 'rb') as f:
+            response = make_response(f.read())
+            response.headers = headers
+
+            return response
+
     file = requests.head(url, headers=header)
     total_size_in_bytes = int(file.headers.get('Content-length', 0))
     headers["content-length"] = total_size_in_bytes
@@ -89,7 +96,7 @@ def export(url, filePath, redownload = False):
         hot_update_list["abInfos"] = newAbInfos
         write_json(hot_update_list, filePath)
 
-        with open(filePath, 'wb') as f:
+        with open(filePath, 'rb') as f:
             data = f.read()
         
         return Response(
