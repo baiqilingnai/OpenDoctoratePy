@@ -1,3 +1,4 @@
+import os
 import requests
 
 from utils import read_json, write_json
@@ -13,6 +14,8 @@ def updateData(url):
 
     for index in BASE_URL_LIST:
         if index[0] in url:
+            if not os.path.isdir(index[1]):
+                os.makedirs(index[1])
             localPath = url.replace(index[0], index[1])
             break
 
