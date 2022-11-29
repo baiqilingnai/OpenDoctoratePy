@@ -47,6 +47,7 @@ app.add_url_rule('/config/prod/announce_meta/Android/preannouncement.meta.json',
 app.add_url_rule('/config/prod/announce_meta/Android/announcement.meta.json', methods=['GET'], view_func=config.prod.prodAnnouncement)
 app.add_url_rule('/config/prod/official/Android/version', methods=['GET'], view_func=config.prod.prodAndroidVersion)
 app.add_url_rule('/config/prod/official/network_config', methods=['GET'], view_func=config.prod.prodNetworkConfig)
+app.add_url_rule('/config/prod/official/refresh_config', methods=['GET'], view_func=config.prod.prodRefreshConfig)
 app.add_url_rule('/config/prod/official/remote_config', methods=['GET'], view_func=config.prod.prodRemoteConfig)
 
 app.add_url_rule('/crisis/getInfo', methods=['POST'], view_func=crisis.crisisGetCrisisInfo)

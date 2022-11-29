@@ -7,8 +7,8 @@
     },
     "assets": {
         "autoUpdate": true,
-        "enableRedirect": true,
-        "enableMods": false
+        "downloadLocally": true,
+        "enableMods": true
     },
     "version": {
         "android": {

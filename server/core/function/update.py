@@ -19,6 +19,9 @@ def updateData(url):
             localPath = url.replace(index[0], index[1])
             break
 
+    if not os.path.isdir('./data/excel/'):
+        os.makedirs('./data/excel/')
+
     if "Android/version" in url:
         data = read_json(CONFIG_PATH)["version"]["android"]
         return data

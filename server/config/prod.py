@@ -1,14 +1,36 @@
 import re
 import json
 
+from random import shuffle
 from constants import CONFIG_PATH
 from utils import read_json, write_json
 from core.function.update import updateData
 
 
+def randomHash():
+
+    hash  = list("abcdef")
+    shuffle(hash)
+
+    return ''.join(hash)
+
+
+def prodRefreshConfig():
+
+    data = {
+        "resVersion": None
+    }
+
+    return data, 200
+
+
 def prodAndroidVersion():
 
-    version = read_json(CONFIG_PATH)["version"]["android"]
+    server_config = read_json(CONFIG_PATH)
+    version = server_config["version"]["android"]
+
+    if server_config["assets"]["enableMods"]:
+        version["resVersion"] = version["resVersion"][:18] + randomHash()
 
     return version
 
@@ -31,14 +53,6 @@ def prodNetworkConfig():
         if index == "sl":
             break
         url = network_config["content"]["configs"][funcVer]["network"][index]
-        
-        if server_config["assets"]["enableRedirect"] == False and index in ["hu", "hv"]:
-            if index == "hu":
-                url = re.sub("{server}", "https://ak.hycdn.cn", url)
-            url = re.sub("{server}", "https://ak-conf.hypergryph.com", url)
-            network_config["content"]["configs"][funcVer]["network"][index] = url
-            continue
-
         network_config["content"]["configs"][funcVer]["network"][index] = re.sub("{server}", server, url)
 
     network_config["content"] = json.dumps(network_config["content"])
