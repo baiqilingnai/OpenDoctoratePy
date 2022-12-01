@@ -53,7 +53,7 @@ def userLogin():
         "isMinor": False,
         "needAuthenticate": False,
         "result": 0,
-        "token": "",
+        "token": "abcd",
         "uid": "1"
     }
 
@@ -65,7 +65,7 @@ def userOAuth2V1Grant():
     data = request.data
     data = {
         "data": {
-            "code": "Zyg+6LMpxvgKtYPsVKEcShUSZgZ+bs154NipxNj4roxD2+Z+IUDzOSBtGTWkye3FpXHKzQLwibItj4Kqd5DeXzj3MB7P",
+            "code": "abcd",
             "uid": "1"
         },
         "msg": "OK",
@@ -98,7 +98,7 @@ def userV1getToken():
         }),
         "isGuest": 0,
         "result": 0,
-        "token": "1",
+        "token": "abcd",
         "uid": "1"
     }
 
@@ -114,7 +114,7 @@ def userAuth():
         "isLatestUserAgreement": True,
         "isMinor": False,
         "needAuthenticate": False,
-        "uid": "0"
+        "uid": "1"
     }
 
     return data

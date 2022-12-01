@@ -8,6 +8,8 @@ fridahookglobal.py
 test.py
 mitmproxy-cn1.py
 integrated_strategy.md
+mods/*
+!mods/.placeholder
 
 # Data files
 data/excel/

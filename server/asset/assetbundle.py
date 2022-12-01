@@ -10,9 +10,7 @@ from core.function.loadMods import loadMods
 from utils import read_json, write_json
 
 header = {"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36 Edg/105.0.1343.53"}
-modsList = {"mods": [], "name": [], "path": [], "download": []}
-if read_json(CONFIG_PATH)["assets"]["enableMods"]:
-    modsList = loadMods()
+MODS_LIST = {}
 
 
 def writeLog(data):
@@ -24,13 +22,17 @@ def writeLog(data):
 
 def getFile(assetsHash, fileName):
 
+    global MODS_LIST
     server_config = read_json(CONFIG_PATH)
     version = server_config["version"]["android"]["resVersion"]
     basePath  = os.path.join('.', 'assets', version, 'redirect')
+    
+    if fileName == 'hot_update_list.json' and read_json(CONFIG_PATH)["assets"]["enableMods"]:
+        MODS_LIST = loadMods()
 
     if not server_config["assets"]["downloadLocally"]:
         basePath  = os.path.join('.', 'assets', version)
-        if fileName != 'hot_update_list.json'and fileName not in modsList["download"]:
+        if fileName != 'hot_update_list.json'and fileName not in MODS_LIST["download"]:
 
             return redirect('https://ak.hycdn.cn/assetbundle/official/Android/assets/{}/{}'.format(version, fileName), 302)
 
@@ -48,8 +50,8 @@ def getFile(assetsHash, fileName):
                     wrongSize = os.path.getsize(filePath) != pack["totalSize"]
                     break
 
-    if server_config["assets"]["enableMods"] and fileName in modsList["download"]:
-        for mod, path in zip(modsList["download"], modsList["path"]):
+    if server_config["assets"]["enableMods"] and fileName in MODS_LIST["download"]:
+        for mod, path in zip(MODS_LIST["download"], MODS_LIST["path"]):
             if fileName == mod and os.path.exists(path):
                 wrongSize = False
                 filePath = path
@@ -100,13 +102,13 @@ def export(url, filePath, assetsHash, redownload = False):
                 hot_update_list["versionId"] = assetsHash
                 if len(abInfo["hash"]) == 24:
                     abInfo["hash"] = assetsHash
-                if abInfo["name"] not in modsList["name"]:
+                if abInfo["name"] not in MODS_LIST["name"]:
                     newAbInfos.append(abInfo)
             else:
                 newAbInfos.append(abInfo)
 
         if server_config["assets"]["enableMods"]:
-            for mod in modsList["mods"]:
+            for mod in MODS_LIST["mods"]:
                 newAbInfos.append(mod)
 
         hot_update_list["abInfos"] = newAbInfos
