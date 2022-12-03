@@ -14,7 +14,7 @@ def writeLog(data):
     print(f'{clientIp} - - [{time}] {data}')
 
 
-def loadMods():
+def loadMods(log: bool = True):
 
     fileList = []
     loadedModList = {
@@ -55,7 +55,8 @@ def loadMods():
                         "abSize": abSize
                     }
                     
-                    writeLog(filePath + ' - \033[1;32mMod loaded successfully...\033[0;0m')
+                    if log:
+                        writeLog(filePath + ' - \033[1;32mMod loaded successfully...\033[0;0m')
 
                     loadedModList["mods"].append(abInfo)
                     loadedModList["name"].append(modName)
