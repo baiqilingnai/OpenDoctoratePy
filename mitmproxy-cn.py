@@ -27,14 +27,11 @@ class AKRedirect:
                 if domain == 'ak-conf.hypergryph.com':
                     flow.request.scheme = 'http'
                     flow.request.host = host
+                    flow.request.port = port
                 else:
                     flow.request.host = '0.0.0.0'
 
-    def request(self, flow: mitmproxy.http.HTTPFlow):
-        if 'ak-conf.hypergryph.com' in flow.request.pretty_host:
-            flow.request.scheme = 'http'
-            flow.request.host = host
-            flow.request.port = port
+    request = http_connect
 
 addons = [
     AKRedirect()

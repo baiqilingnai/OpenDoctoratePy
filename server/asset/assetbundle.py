@@ -10,7 +10,12 @@ from core.function.loadMods import loadMods
 from utils import read_json, write_json
 
 header = {"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36 Edg/105.0.1343.53"}
-MODS_LIST = {}
+MODS_LIST = {
+    "mods": [],
+    "name": [],
+    "path": [],
+    "download": []
+}
 
 
 def writeLog(data):
@@ -33,7 +38,6 @@ def getFile(assetsHash, fileName):
     if not server_config["assets"]["downloadLocally"]:
         basePath  = os.path.join('.', 'assets', version)
         if fileName != 'hot_update_list.json'and fileName not in MODS_LIST["download"]:
-
             return redirect('https://ak.hycdn.cn/assetbundle/official/Android/assets/{}/{}'.format(version, fileName), 302)
 
     if not os.path.isdir(basePath):

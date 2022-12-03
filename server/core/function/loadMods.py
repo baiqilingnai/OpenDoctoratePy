@@ -25,7 +25,8 @@ def loadMods():
     }
     
     for file in os.listdir('./mods/'):
-        fileList.append('./mods/' + file)
+        if file != ".placeholder":
+            fileList.append('./mods/' + file)
 
     for filePath in fileList:
         modFile = zipfile.ZipFile(filePath, 'r')

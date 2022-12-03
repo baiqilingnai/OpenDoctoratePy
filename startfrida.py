@@ -1,26 +1,34 @@
 import os
 import sys
 import lzma
+import time
+import subprocess
 from contextlib import suppress
 
 import requests
 from ppadb.client import Client as AdbClient
 
-print("Connecting to currently opened emulator")
-client = AdbClient(host="127.0.0.1", port=5037)
-devices = client.devices()
-if len(devices) > 1:
-    print("Multiple adb connections detected. Select one to connect to.")
-    for d in devices:
-        print(f"{devices.index(d) + 1}. {d.serial}")
-    index = int(input("Input Number: "))
-    device = devices[index-1]
-elif len(devices) < 1:
-    print("No adb devices detected. Try typing <adb devices> in cmd a couple of times and try again.")
-    input("Press enter to continue: ")
-    sys.exit(0)
-else:
-    device = devices[0]
+ADB_PATH = "platform-tools\\adb.exe"
+
+while True:
+    os.system('cls')
+    print("Restarting server")
+    subprocess.run(f"{ADB_PATH} kill-server")
+    subprocess.run(f"{ADB_PATH} start-server")
+    time.sleep(5)
+
+    print("Connecting to currently opened emulator")
+    client = AdbClient(host="127.0.0.1", port=5037)
+    devices = client.devices()
+    if len(devices) < 1:
+        print("No adb devices detected. Make sure that an emulator is running and has adb connection open.")
+        input("Enter to retry..")
+        sys.exit(0)
+    elif len(devices) > 1:
+        continue
+    else:
+        device = devices[0]
+        break
 
 frida_exists = device.shell('test -f /data/local/tmp/frida-server && echo True').strip()
 with suppress(RuntimeError):

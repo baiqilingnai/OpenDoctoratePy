@@ -155,9 +155,7 @@ def main():
 
         setTimeout(function() {{
             [0xd281e3, 0x35795a9, 0x469af22, 0x35796ef].forEach(hookTrue);
-            //[0x1e76213, 0x3a01bfb, 0x3a01c8a].forEach(hookTrue);
             [0xd20970].forEach(hookFalse);
-            //[0x2bb9833].forEach(hookDump);
         }}, 6000)
 
         redirect_traffic_to_proxy(proxy_url, proxy_port);

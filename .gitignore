@@ -1,15 +1,20 @@
 # User files
 TestLevel/
+
 data/user/user.json
 data/crisis/cc9.json
 data/crisis/test.json
 data/crisis/cccustom.json
+
 fridahookglobal.py
 test.py
 mitmproxy-cn1.py
 integrated_strategy.md
+
 mods/*
 !mods/.placeholder
+
+platform-tools/
 
 # Data files
 data/excel/

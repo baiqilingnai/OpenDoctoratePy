@@ -1,6 +1,6 @@
 {
     "server": {
-        "host": "192.168.0.104",
+        "host": "192.168.86.243",
         "port": 8443,
         "enableServer": true,
         "maintenanceMsg": "Server is currently under maintenance!"
@@ -54,7 +54,7 @@
     "userConfig": {
         "restorePreviousStates": {
             "is2": false,
-            "squadsAndFavs": true
+            "squadsAndFavs": false
         }
     },
     "charConfig": {
