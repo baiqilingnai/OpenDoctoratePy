@@ -50,10 +50,9 @@ def prodNetworkConfig():
         write_json(server_config, CONFIG_PATH)
 
     for index in network_config["content"]["configs"][funcVer]["network"]:
-        if index == "sl":
-            break
         url = network_config["content"]["configs"][funcVer]["network"][index]
-        network_config["content"]["configs"][funcVer]["network"][index] = re.sub("{server}", server, url)
+        if isinstance(url, str) and url.find("{server}") >= 0:
+            network_config["content"]["configs"][funcVer]["network"][index] = re.sub("{server}", server, url)
 
     network_config["content"] = json.dumps(network_config["content"])
 
