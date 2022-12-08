@@ -1,5 +1,5 @@
 @echo off
-@title Doctorate - MITM Proxy
+@title Doctorate - Setup
 
 set "oldVirtualEnvironmentFolder=oldEnv"
 set "virtualEnvironmentFolder=env"
@@ -22,4 +22,4 @@ IF '%errorlevel%' NEQ '0' (
 )
 
 cls
-py setup_mitmproxy.py
+py setup_requirements.py

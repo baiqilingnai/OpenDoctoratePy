@@ -2,13 +2,30 @@ import os
 import sys
 import lzma
 import time
+import shutil
 import subprocess
+from zipfile import ZipFile
 from contextlib import suppress
 
 import requests
 from ppadb.client import Client as AdbClient
 
+CERT_FILE_PATH = os.path.join(os.environ['USERPROFILE'], ".mitmproxy", "mitmproxy-ca-cert.cer")
 ADB_PATH = "platform-tools\\adb.exe"
+
+if not os.path.exists(CERT_FILE_PATH):
+    print("Launching mitmproxy for first time")
+    p = subprocess.Popen("mitmdump")
+    time.sleep(5)
+    p.kill()
+
+
+if not os.path.exists(ADB_PATH):
+    print("No adb file found. Downloading the latest version.")
+    r = requests.get("https://dl.google.com/android/repository/platform-tools-latest-windows.zip", allow_redirects=True)
+    open('adb.zip', 'wb').write(r.content)
+    ZipFile('adb.zip').extractall(".")
+    os.remove('adb.zip')
 
 os.system('cls')
 subprocess.run(f"{ADB_PATH} kill-server")
@@ -72,7 +89,45 @@ while True:
 print("Check the emulator and accept if it asks for root permission.")
 with suppress(RuntimeError):
     device.root()
-time.sleep(5) # Sleep for 5 seconds to make sure that the emulator is rooted
+time.sleep(3) # Sleep for 3 seconds to make sure that the emulator is rooted
 
-print("\nRunning frida\nNow you can start fridahook\n")
-os.system(f'{ADB_PATH} shell "/data/local/tmp/frida-server" &')
+cert_exists = device.shell('test -f /data/local/tmp/mitmproxy-ca-cert.cer && echo True').strip()
+if not cert_exists:
+    shutil.copy(CERT_FILE_PATH, os.path.join(os.getcwd(), "mitmproxy-ca-cert.cer"))
+    print("Copying mitmproxy certificate...")
+    device.push("mitmproxy-ca-cert.cer", "/data/local/tmp/mitmproxy-ca-cert.cer")
+
+    print("Modifying permissions")
+    device.shell("chmod 755 /data/local/tmp/mitmproxy-ca-cert.cer")
+
+    print("Mitmproxy certificate is installed!")
+    os.remove("mitmproxy-ca-cert.cer")
+
+
+frida_exists = device.shell('test -f /data/local/tmp/frida-server && echo True').strip()
+if not frida_exists:
+    architecture = device.shell("getprop ro.product.cpu.abi").strip().replace("-v8a", "")
+    print(f"\nArchitecture: {architecture}")
+
+    version = requests.get("https://api.github.com/repos/frida/frida/releases/latest").json()["tag_name"]
+    name = f"frida-server-{version}-android-{architecture}"
+    print(f"Downloading {name}...")
+    url = f"https://github.com/frida/frida/releases/download/{version}/{name}.xz"
+    r = requests.get(url, allow_redirects=True)
+    open('frida-server.xz', 'wb').write(r.content)
+
+    print("Extracting....")
+    with lzma.open("frida-server.xz") as f, open('frida-server', 'wb') as fout:
+        file_content = f.read()
+        fout.write(file_content)
+
+    print("Copying frida-server...")
+    device.push("frida-server", "/data/local/tmp/frida-server")
+
+    print("Modifying permissions")
+    device.shell("chmod 755 /data/local/tmp/frida-server")
+    os.remove("frida-server")
+    os.remove("frida-server.xz")
+
+print("\nMitmproxy certificate and frida-server are installed!")
+input("Press enter to exit...")

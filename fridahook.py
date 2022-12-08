@@ -13,10 +13,32 @@ def on_message(message, data):
 
 def main():
     device = frida.get_usb_device(timeout=1)
-    pid = device.spawn(b64decode('Y29tLmh5cGVyZ3J5cGguYXJrbmlnaHRz').decode())
-    device.resume(pid)
-    session = device.attach(pid)
-    # session = device.attach(b64decode('Y29tLmh5cGVyZ3J5cGguYXJrbmlnaHRz').decode())
+    while True:
+        num = input("Choose your emulator.\n1. Mumu Player\n2. LDPlayer9 and Others\nChoose one: ")
+        try:
+            num = int(num)
+        except:
+            print("Invalid input")
+            continue
+
+        if num not in [1, 2]:
+            print("Invalid input")
+            continue
+
+        if num == 1:
+            # Mumu Player
+            session = device.attach("Arknights")
+            timeout = 500
+            break
+
+        elif num == 2:
+            # LDPlayer9
+            pid = device.spawn(b64decode('Y29tLmh5cGVyZ3J5cGguYXJrbmlnaHRz').decode())
+            device.resume(pid)
+            session = device.attach(pid)
+            timeout = 6000
+            break
+
     script = session.create_script("""
 
     function redirect_traffic_to_proxy(proxy_url, proxy_port) {{
@@ -151,12 +173,12 @@ def main():
     function init(){{
         var proxy_url = "{HOST}";
         var proxy_port = 8080;
-        var mitm_cert_location_on_device = "/storage/emulated/0/Pictures/mitmproxy-ca-cert.cer";
+        var mitm_cert_location_on_device = "/data/local/tmp/mitmproxy-ca-cert.cer";
 
         setTimeout(function() {{
             [0xd281e3, 0x35795a9, 0x469af22, 0x35796ef].forEach(hookTrue);
             [0xd20970].forEach(hookFalse);
-        }}, 6000)
+        }}, {timeout})
 
         redirect_traffic_to_proxy(proxy_url, proxy_port);
         replace_cert(mitm_cert_location_on_device);	
@@ -164,7 +186,7 @@ def main():
 
     init();
 
-""".format(HOST=HOST))
+""".format(HOST=HOST, timeout=timeout))
     script.on('message', on_message)
     script.load()
     print("[!] Ctrl+D on UNIX, Ctrl+Z on Windows/cmd.exe to detach from instrumented program.\n\n")
