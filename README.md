@@ -10,7 +10,7 @@ Discord Invite: [Link](https://discord.gg/pUj8HQ5FQU)
 3. Open emulator, enable root and open adb connection if necessary. Install the game.
 4. Run `setup_requirements.bat` and choose corresponding emulator.
 5. Configure your proxy ip address in `config\config.json` in the `host` key.
-6. Run `start_frida-hook.bat` and `start_local_server.bat`.
+6. Run `start_mitmproxy.bat` and `start_local_server.bat`.
 
 ### MuMu Player
 7. Open the game. Wait till an error appears.
