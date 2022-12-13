@@ -9,12 +9,14 @@ data/crisis/cccustom.json
 fridahookglobal.py
 test.py
 mitmproxy-cn1.py
-integrated_strategy.md
+integrated_strategy.
+start_doctorate.bat
 
 mods/*
 !mods/.placeholder
 
 platform-tools/
+mysql/
 
 # Data files
 data/excel/

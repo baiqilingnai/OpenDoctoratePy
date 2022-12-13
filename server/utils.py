@@ -9,5 +9,4 @@ def read_json(filepath: str, **args) -> dict:
 def write_json(data: dict, filepath: str) -> None:
 
     with open(filepath, 'w') as f:
-        json.dump(data, f, sort_keys=True, indent=4)
-
+        json.dump(data, f, sort_keys=False, indent=4)

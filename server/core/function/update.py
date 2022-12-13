@@ -26,12 +26,8 @@ def updateData(url):
 
     server_config = read_json(CONFIG_PATH)
     if "Android/version" in url:
-        if server_config["assets"]["enableMods"]:
-            data = read_json(CONFIG_PATH)["version"]["android"]
-            return data
-        else:
-            data = requests.get(url).json()
-            return data
+        data = requests.get(url).json()
+        return data
 
     loaded_mods = loadMods.loadMods(log=False)
     current_url = os.path.splitext(os.path.basename(url))[0]
