@@ -8,12 +8,12 @@
     "assets": {
         "autoUpdate": true,
         "downloadLocally": true,
-        "enableMods": true
+        "enableMods": false
     },
     "version": {
         "android": {
-            "resVersion": "22-11-22-10-24-31-71ede3",
-            "clientVersion": "1.9.21"
+            "resVersion": "22-12-14-13-42-39-ee18cc",
+            "clientVersion": "1.9.42"
         }
     },
     "remote": {
@@ -27,7 +27,7 @@
             "configVer": "5",
             "funcVer": "V034",
             "configs": {
-                "V033": {
+                "V034": {
                     "override": true,
                     "network": {
                         "gs": "{server}",

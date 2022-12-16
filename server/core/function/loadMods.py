@@ -4,8 +4,6 @@ import zipfile
 import hashlib
 from datetime import datetime
 
-os.system("")
-
 
 def writeLog(data):
 
@@ -25,7 +23,7 @@ def loadMods(log: bool = True):
     }
     
     for file in os.listdir('./mods/'):
-        if file != ".placeholder":
+        if file != ".placeholder" and file.endswith(".dat"):
             fileList.append('./mods/' + file)
 
     for filePath in fileList:

@@ -33,11 +33,12 @@ def updateData(url):
     current_url = os.path.splitext(os.path.basename(url))[0]
     current_is_mod = False
 
-    for mod in loaded_mods["name"]:
-        if current_url in mod:
-            current_is_mod = True
-            break
-
+    if server_config["assets"]["enableMods"]:
+        for mod in loaded_mods["name"]:
+            if current_url in mod:
+                current_is_mod = True
+                break
+    
     if not current_is_mod:
         try:
             data = requests.get(url).json()
