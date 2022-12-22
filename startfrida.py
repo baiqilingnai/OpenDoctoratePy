@@ -4,9 +4,13 @@ import lzma
 import time
 import subprocess
 from contextlib import suppress
+import json
 
 import requests
 from ppadb.client import Client as AdbClient
+
+mitmproxy_server = json.load(open('./config/config.json', 'r'))["mitmproxy"]
+mitmproxy_port = mitmproxy_server["port"]
 
 ADB_PATH = "platform-tools\\adb.exe"
 
@@ -75,4 +79,5 @@ with suppress(RuntimeError):
 time.sleep(5) # Sleep for 5 seconds to make sure that the emulator is rooted
 
 print("\nRunning frida\nNow you can start fridahook\n")
+os.system(f'{ADB_PATH} reverse tcp:8080 tcp:{mitmproxy_port}')
 os.system(f'{ADB_PATH} shell "/data/local/tmp/frida-server" &')

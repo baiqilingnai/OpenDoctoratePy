@@ -3,11 +3,6 @@ from base64 import b64decode
 
 import frida
 
-from server.constants import CONFIG_PATH
-from server.utils import read_json
-
-HOST = read_json(CONFIG_PATH)["server"]["host"]
-
 def on_message(message, data):
     print("[%s] => %s" % (message, data))
 
@@ -171,7 +166,7 @@ def main():
     }}
 
     function init(){{
-        var proxy_url = "{HOST}";
+        var proxy_url = "127.0.0.1";
         var proxy_port = 8080;
         var mitm_cert_location_on_device = "/data/local/tmp/mitmproxy-ca-cert.cer";
 
@@ -186,7 +181,7 @@ def main():
 
     init();
 
-""".format(HOST=HOST, timeout=timeout))
+""".format(timeout=timeout))
     script.on('message', on_message)
     script.load()
     print("[!] Ctrl+D on UNIX, Ctrl+Z on Windows/cmd.exe to detach from instrumented program.\n\n")
