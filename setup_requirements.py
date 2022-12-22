@@ -89,7 +89,7 @@ while True:
 print("Check the emulator and accept if it asks for root permission.")
 with suppress(RuntimeError):
     device.root()
-time.sleep(3) # Sleep for 3 seconds to make sure that the emulator is rooted
+os.system(f'{ADB_PATH} wait-for-device')
 
 cert_exists = device.shell('test -f /data/local/tmp/mitmproxy-ca-cert.cer && echo True').strip()
 if not cert_exists:

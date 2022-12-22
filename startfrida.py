@@ -72,7 +72,7 @@ while True:
 print("Check the emulator and accept if it asks for root permission.")
 with suppress(RuntimeError):
     device.root()
-time.sleep(5) # Sleep for 5 seconds to make sure that the emulator is rooted
+os.system(f'{ADB_PATH} wait-for-device')
 
 print("\nRunning frida\nNow you can start fridahook\n")
 os.system(f'{ADB_PATH} shell "/data/local/tmp/frida-server" &')
