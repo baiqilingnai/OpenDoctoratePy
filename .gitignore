@@ -23,6 +23,16 @@ data/excel/
 data/announce/
 assets/
 
+mods/*
+!mods/.placeholder
+
+platform-tools/
+
+# Data files
+data/excel/
+data/announce/
+assets/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

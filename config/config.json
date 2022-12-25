@@ -1,9 +1,12 @@
 {
     "server": {
-        "host": "192.168.86.243",
+        "host": "127.0.0.1",
         "port": 8443,
         "enableServer": true,
         "maintenanceMsg": "Server is currently under maintenance!"
+    },
+    "mitmproxy": {
+        "port": 8080
     },
     "assets": {
         "autoUpdate": true,
