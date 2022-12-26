@@ -1,6 +1,9 @@
+import re
+import logging
 from datetime import datetime
 
 from flask import Flask
+
 from utils import read_json
 from constants import CONFIG_PATH
 
@@ -14,6 +17,9 @@ app = Flask(__name__)
 host = server_config["server"]["host"]
 port = server_config["server"]["port"]
 
+logger = logging.getLogger('werkzeug')
+logger.setLevel(logging.INFO)
+logger.addFilter(lambda s: not re.match(".*404 -*", s.getMessage()))
 
 app.add_url_rule('/account/login', methods=['POST'], view_func=account.accountLogin)
 app.add_url_rule('/account/syncData', methods=['POST'], view_func=account.accountSyncData)

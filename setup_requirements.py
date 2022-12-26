@@ -1,8 +1,6 @@
 import os
 import sys
 import lzma
-import time
-import shutil
 import subprocess
 from zipfile import ZipFile
 from contextlib import suppress
@@ -10,15 +8,31 @@ from contextlib import suppress
 import requests
 from ppadb.client import Client as AdbClient
 
-CERT_FILE_PATH = os.path.join(os.environ['USERPROFILE'], ".mitmproxy", "mitmproxy-ca-cert.cer")
 ADB_PATH = "platform-tools\\adb.exe"
 
-if not os.path.exists(CERT_FILE_PATH):
-    print("Launching mitmproxy for first time")
-    p = subprocess.Popen("mitmdump")
-    time.sleep(5)
-    p.kill()
+def get_device():
+    devices = client.devices()
+    if len(devices) == 0:
+        for port in default_ports:
+            with suppress(Exception):
+                client.remote_connect("127.0.0.1", port)
+                devices = client.devices()
+                if len(devices) == 1:
+                    return devices[0]
+        
+        print("No emulator found.\nEnter the adb connection url with port manually or type q to exit or press enter to wait for a device: ")
+        result = input()
+        if result.lower() == "q":
+            sys.exit(0)
+        
+        if result:
+            result = result.split(":")
+            client.remote_connect(result[0], int(result[1]))
 
+    result = subprocess.getoutput(f'"{ADB_PATH}" wait-for-device')
+    devices = client.devices()
+    if len(devices) == 1:
+        return devices[0]
 
 if not os.path.exists(ADB_PATH):
     print("No adb file found. Downloading the latest version.")
@@ -30,79 +44,18 @@ if not os.path.exists(ADB_PATH):
 os.system('cls')
 subprocess.run(f"{ADB_PATH} kill-server")
 subprocess.run(f"{ADB_PATH} start-server")
-time.sleep(3)
+default_ports = [7555, 62001]
 client = AdbClient(host="127.0.0.1", port=5037)
 device = None
 
-while True:
-    num = input("Choose your emulator.\n1. Mumu Player\n2. LDPlayer9\n3. Auto\nChoose one: ")
-    try:
-        num = int(num)
-    except:
-        print("Invalid input")
-        continue
-
-    if num not in [1, 2, 3]:
-        print("Invalid input")
-        continue
-
-    if num == 1:
-        # Mumu Player
-        print("Trying to connect to currently opened Mumu Player")
-        client.remote_connect("127.0.0.1", 7555) # Default port for mumu player
-        devices = client.devices()
-        if len(devices) != 1:
-            print("Something went wrong. Make sure that an emulator is running and has adb connection open.")
-            sys.exit(0)
-        device = devices[0]
-        break
-
-    elif num == 2:
-        # LDPlayer9
-        print("Trying to connect to currently opened LDPlayer9 Player")
-        devices = client.devices() # LDPlayer9 usually auto connects to adb
-        if len(devices) != 1: # If not found, try to connect manually to default port
-            client.remote_connect("127.0.0.1", 5555)
-            devices = client.devices()
-            if len(devices) != 1:
-                print("Something went wrong. Make sure that an emulator is running and has adb connection open.")
-                sys.exit(0)
-        device = devices[0]
-        break
-
-    elif num == 3:
-        # Auto
-        print("Finding an open emulator within the default port range...")
-        for i in range(5554, 5682):
-            print("Trying port", i, end="\r")
-            client.remote_connect("127.0.0.1", i) # Default port for mumu player
-            devices = client.devices()
-            if len(devices) == 1:
-                device = devices[0]
-                print("Found emulator on port", i)
-                break
-        if not device:
-            print("No emulator found on default port range (5554-5682). Make sure that an emulator is running and has adb connection open.")
-            sys.exit(0)
-        break
+print("Trying to connect to currently opened emulator")
+device = get_device()
 
 print("Check the emulator and accept if it asks for root permission.")
 with suppress(RuntimeError):
     device.root()
+device = get_device()
 os.system(f'{ADB_PATH} wait-for-device')
-
-cert_exists = device.shell('test -f /data/local/tmp/mitmproxy-ca-cert.cer && echo True').strip()
-if not cert_exists:
-    shutil.copy(CERT_FILE_PATH, os.path.join(os.getcwd(), "mitmproxy-ca-cert.cer"))
-    print("Copying mitmproxy certificate...")
-    device.push("mitmproxy-ca-cert.cer", "/data/local/tmp/mitmproxy-ca-cert.cer")
-
-    print("Modifying permissions")
-    device.shell("chmod 755 /data/local/tmp/mitmproxy-ca-cert.cer")
-
-    print("Mitmproxy certificate is installed!")
-    os.remove("mitmproxy-ca-cert.cer")
-
 
 frida_exists = device.shell('test -f /data/local/tmp/frida-server && echo True').strip()
 if not frida_exists:
@@ -129,5 +82,5 @@ if not frida_exists:
     os.remove("frida-server")
     os.remove("frida-server.xz")
 
-print("\nMitmproxy certificate and frida-server are installed!")
+print("\nFrida-server is installed!")
 input("Press enter to exit...")

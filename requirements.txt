@@ -1,5 +1,4 @@
 flask
 requests
-mitmproxy
 frida
 pure-python-adb
