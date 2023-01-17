@@ -29,8 +29,8 @@ def main():
             continue
 
         if MODE == "cn":
-            TRUE_ADD = "0x1b87621, 0xbe735a, 0x4c6f851, 0xbe74a0"
-            FALSE_ADD = "0x1b7fcc9"
+            TRUE_ADD = "0xfe978f, 0x362b738, 0x478e71f, 0x362b87e"
+            FALSE_ADD = "0xfde384"
         elif MODE == "global":
             TRUE_ADD = "0x03208494, 0x04225acc, 0x04225bf0, 0x051c4fe4, 0x051c7cf4, 0x021a95e4"
             FALSE_ADD = "0x021a25dc"
