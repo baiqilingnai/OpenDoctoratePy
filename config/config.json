@@ -27,9 +27,9 @@
             "sign": "sign",
             "content": {
                 "configVer": "5",
-                "funcVer": "V034",
+                "funcVer": "V035",
                 "configs": {
-                    "V034": {
+                    "V035": {
                         "override": true,
                         "network": {
                             "gs": "{server}",
