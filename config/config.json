@@ -4,17 +4,17 @@
         "port": 8443,
         "enableServer": true,
         "maintenanceMsg": "Server is currently under maintenance!",
-        "mode": "global"
+        "mode": "cn"
     },
     "assets": {
-        "autoUpdate": true,
+        "autoUpdate": false,
         "downloadLocally": true,
         "enableMods": false
     },
     "version": {
         "android": {
-            "resVersion": "22-12-22-20-39-54-5c2967",
-            "clientVersion": "13.0.01"
+            "resVersion": "23-07-14-10-11-09-75fcfa",
+            "clientVersion": "2.0.40"
         }
     },
     "remote": {
@@ -27,9 +27,9 @@
             "sign": "sign",
             "content": {
                 "configVer": "5",
-                "funcVer": "V035",
+                "funcVer": "V040",
                 "configs": {
-                    "V035": {
+                    "V040": {
                         "override": true,
                         "network": {
                             "gs": "{server}",
@@ -110,7 +110,7 @@
         "duplicateUnits": [],
         "assistUnit": {
             "charId": "char_350_surtr",
-            "skinId": "char_350_surtr@it#1",
+            "skinId": "char_350_surtr@summer#9",
             "skillIndex": 2
         }
     }
