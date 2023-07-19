@@ -6,6 +6,8 @@ from flask import request
 from constants import USER_JSON_PATH
 from utils import read_json, write_json
 
+import time
+
 
 def userCheckIn():
 
@@ -188,3 +190,101 @@ def userAgreement():
     }
 
     return data
+
+def auth_v1_token_by_phone_password():
+    return {
+        "status": 0,
+        "msg": "OK",
+        "data": {
+            "token": "doctorate"
+        }
+    }
+
+
+def info_v1_basic():
+    return {
+        "status": 0,
+        "msg": "OK",
+        "data": {
+            "hgId": "1",
+            "phone": "doctorate",
+            "email": "doctorate",
+            "identityNum": "doctorate",
+            "identityName": "doctorate",
+            "isMinor": False,
+            "isLatestUserAgreement": True
+        }
+    }
+
+
+def oauth2_v2_grant():
+    return {
+        "status": 0,
+        "msg": "OK",
+        "data": {
+            "code": "doctorate",
+            "uid": "1"
+        }
+    }
+
+
+def app_v1_config():
+    return {
+    "status": 0,
+    "msg": "OK",
+    "data": {
+        "antiAddiction": {
+            "minorPeriodEnd": 21,
+            "minorPeriodStart": 20
+        },
+        "payment": [
+            {
+                "key": "alipay",
+                "recommend": True
+            },
+            {
+                "key": "wechat",
+                "recommend": False
+            },
+            {
+                "key": "pcredit",
+                "recommend": False
+            }
+        ],
+        "customerServiceUrl": "https://chat.hypergryph.com/chat/h5/v2/index.html",
+        "cancelDeactivateUrl": "https://user.hypergryph.com/cancellation",
+        "agreementUrl": {
+            "game": "https://user.hypergryph.com/protocol/plain/ak/index",
+            "unbind": "https://user.hypergryph.com/protocol/plain/ak/cancellation",
+            "account": "https://user.hypergryph.com/protocol/plain/index",
+            "privacy": "https://user.hypergryph.com/protocol/plain/privacy",
+            "register": "https://user.hypergryph.com/protocol/plain/registration",
+            "updateOverview": "https://user.hypergryph.com/protocol/plain/overview_of_changes",
+            "childrenPrivacy": "https://user.hypergryph.com/protocol/plain/children_privacy"
+        },
+        "app": {
+            "enablePayment": True,
+            "enableAutoLogin": False,
+            "enableAuthenticate": True,
+            "enableAntiAddiction": True,
+            "wechatAppId": "",
+            "alipayAppId": "",
+            "oneLoginAppId": "",
+            "enablePaidApp": False,
+            "appName": "明日方舟",
+            "appAmount": 600
+        }
+    }
+}
+
+
+
+def general_v1_server_time():
+    return {
+        "status": 0,
+        "msg": "OK",
+        "data": {
+            "serverTime": int(time.time()),
+            "isHoliday": False
+        }
+    }

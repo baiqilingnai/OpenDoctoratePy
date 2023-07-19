@@ -1,26 +1,26 @@
 from utils import read_json
 
 # Config Data
-CONFIG_PATH = "config\\config.json"
-MAILLIST_PATH = "config\\mails.json"
-RLV2_CONFIG_PATH = "config\\rlv2Config.json"
+CONFIG_PATH = "config/config.json"
+MAILLIST_PATH = "config/mails.json"
+RLV2_CONFIG_PATH = "config/rlv2Config.json"
 SYNC_DATA_TEMPLATE_PATH = "syncData.json"
 
 # User Data
-USER_JSON_PATH = "data\\user\\user.json"
-BATTLE_REPLAY_JSON_PATH = "data\\user\\battleReplays.json"
-RLV2_JSON_PATH = "data\\user\\rlv2.json"
-RLV2_TEMPBUFF_JSON_PATH = "data\\user\\rlv2TempBuffs.json"
-CRISIS_JSON_BASE_PATH = "data\\crisis\\"
-RUNE_JSON_PATH = "data\\user\\rune.json"
+USER_JSON_PATH = "data/user/user.json"
+BATTLE_REPLAY_JSON_PATH = "data/user/battleReplays.json"
+RLV2_JSON_PATH = "data/user/rlv2.json"
+RLV2_TEMPBUFF_JSON_PATH = "data/user/rlv2TempBuffs.json"
+CRISIS_JSON_BASE_PATH = "data/crisis/"
+RUNE_JSON_PATH = "data/user/rune.json"
 
 # RLV2 Options
-RLV2_CHOICEBUFFS = "data\\rlv2\\choiceBuffs.json"
-RLV2_RECRUITGROUPS = "data\\rlv2\\recruitGroups.json"
-RLV2_NODESINFO = "data\\rlv2\\nodesInfo.json"
+RLV2_CHOICEBUFFS = "data/rlv2/choiceBuffs.json"
+RLV2_RECRUITGROUPS = "data/rlv2/recruitGroups.json"
+RLV2_NODESINFO = "data/rlv2/nodesInfo.json"
 
 # TOWER Data
-TOWERDATA_PATH = "data\\tower\\towerData.json"
+TOWERDATA_PATH = "data/tower/towerData.json"
 
 config = read_json(CONFIG_PATH)
 mode = config["server"]["mode"]

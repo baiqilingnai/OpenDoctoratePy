@@ -100,14 +100,14 @@ def charBuildSetDefaultSkill():
         }
     }
 
-    if charInstId and defaultSkillIndex:
-        data["playerDataDelta"]["modified"]["troop"]["chars"].update({
-            str(charInstId): {
-                "defaultSkillIndex": defaultSkillIndex
-            }
-        })
 
-        return data
+    data["playerDataDelta"]["modified"]["troop"]["chars"].update({
+        str(charInstId): {
+            "defaultSkillIndex": defaultSkillIndex
+        }
+    })
+
+    return data
 
 
 def charBuildChangeCharSkin():

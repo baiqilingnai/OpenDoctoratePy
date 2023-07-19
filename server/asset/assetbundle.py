@@ -4,7 +4,7 @@ import hashlib
 import requests
 
 from datetime import datetime
-from flask import Response, stream_with_context, redirect
+from flask import Response, stream_with_context, redirect, send_file, send_from_directory
 from constants import CONFIG_PATH
 from core.function.loadMods import loadMods
 from utils import read_json, write_json
@@ -67,9 +67,9 @@ def getFile(assetsHash, fileName):
     writeLog('/{}/{}'.format(version, fileName))
 
     if mode == "cn":
-        return export('https://ak.hycdn.cn/assetbundle/official/Android/assets/{}/{}'.format(version, fileName), filePath, assetsHash, wrongSize)
+        return export('https://ak.hycdn.cn/assetbundle/official/Android/assets/{}/{}'.format(version, fileName), basePath, fileName, filePath, assetsHash, wrongSize)
     elif mode == "global":
-        return export('https://ark-us-static-online.yo-star.com/assetbundle/official/Android/assets/{}/{}'.format(version, fileName), filePath, assetsHash, wrongSize)
+        return export('https://ark-us-static-online.yo-star.com/assetbundle/official/Android/assets/{}/{}'.format(version, fileName), basePath, fileName, filePath, assetsHash, wrongSize)
 
 
 def downloadFile(url, filePath):
@@ -83,7 +83,7 @@ def downloadFile(url, filePath):
             yield chunk
 
 
-def export(url, filePath, assetsHash, redownload = False):
+def export(url, basePath, fileName, filePath, assetsHash, redownload = False):
 
     server_config = read_json(CONFIG_PATH)
 
@@ -131,23 +131,10 @@ def export(url, filePath, assetsHash, redownload = False):
             os.makedirs(cachePath)
         write_json(hot_update_list, savePath)
 
-        with open(savePath, 'rb') as f:
-            data = f.read()
-        
-        return Response(
-            data,
-            headers=headers
-        )
+        return send_file('../assets/cache/hot_update_list.json')
 
     if os.path.exists(filePath) and not redownload:
-        with open(filePath, "rb") as f:
-            data = f.read()
-        headers["Content-Length"] = os.path.getsize(filePath)
-        
-        return Response(
-            data,
-            headers=headers
-        )
+        return send_from_directory(os.path.join("..", basePath), fileName)
 
     else:
         file = requests.head(url, headers=header)

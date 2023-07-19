@@ -124,6 +124,27 @@ app.add_url_rule('/user/info/v1/need_cloud_auth', methods=['POST'], view_func=us
 app.add_url_rule('/user/yostar_createlogin', methods=['POST'], view_func=user.userYostarCreatelogin)
 app.add_url_rule('/u8/user/v1/getToken', methods=['POST'], view_func=user.userV1getToken)
 
+app.add_url_rule(
+    '/user/auth/v1/token_by_phone_password',
+    methods=['POST'], view_func=user.auth_v1_token_by_phone_password
+)
+app.add_url_rule(
+    '/user/info/v1/basic',
+    methods=['GET'], view_func=user.info_v1_basic
+)
+app.add_url_rule(
+    '/user/oauth2/v2/grant',
+    methods=['POST'], view_func=user.oauth2_v2_grant
+)
+app.add_url_rule(
+    '/app/v1/config',
+    methods=['GET'], view_func=user.app_v1_config
+)
+app.add_url_rule(
+    '/general/v1/server_time',
+    methods=['GET'], view_func=user.general_v1_server_time
+)
+
 
 def writeLog(data):
     print(f'[{datetime.utcnow()}] {data}')
