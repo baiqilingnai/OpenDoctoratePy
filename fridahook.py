@@ -30,7 +30,7 @@ def main():
         device.resume(pid)
         session = device.attach(pid, realm="emulated")
 
-    with open("_.js") as f:
+    with open("_.js", encoding="utf-8") as f:
         s = f.read()
 
     s = s.replace(
