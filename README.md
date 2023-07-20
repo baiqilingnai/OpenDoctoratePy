@@ -1,35 +1,21 @@
-# DoctoratePy
-Python server implementation of a certain anime tower defense game. This repo is for the CN TapTap Version.
+# OpenDoctoratePy
 
-Discord Invite: [Link](https://discord.gg/pUj8HQ5FQU)
+It's a pity that DoctoratePy is no longer maintained. Therefore, this repo aims to continue the support of this project for newer versions of the game.
+
+Python server implementation of a certain anime tower defense game. This repo is for the CN TapTap Version.
 
 ## How To
 
-1. Install [mitmproxy](https://mitmproxy.org/) and [python3](https://www.python.org/downloads/).
-2. Clone the repo.
-3. Open emulator, enable root and open adb connection if necessary. Install the game.
-4. Run `setup_requirements.bat` and choose corresponding emulator.
-5. Configure your proxy ip address in `config\config.json` in the `host` key.
-6. Run `start_mitmproxy.bat` and `start_local_server.bat`.
-
-### MuMu Player
-7. Open the game. Wait till an error appears.
-8. Run `start_frida-server.bat` and choose `1`.
-9. Run `start_frida-hook.bat` and choose `1`.
-
 ### LDPlayer9
-7. Run `start_frida-server.bat` and choose `2`.
-8. Run `start_frida-hook.bat` and choose `2`. It should automatically open up the game.
-
-### Others (Haven't tested yet. Might or might not work.)
-7. Run `start_frida-server.bat` and choose `3`.
-8. Run `start_frida-hook.bat` and choose `2`. It should automatically open up the game.
-
-Note: There should be a total of 4 cmd windows opened.
+1. Enable root permission and adb connection in LDPlayer9's settings.
+2. Start LDPlayer9.
+3. Run `setup_requirements.bat`, and success can be indicated from "Press any key to continue".
+4. Run `start_local_server.bat`, and the window should stay opened if no error occurs.
+5. Run `start_frida-server.bat`, and the window should stay opened if no error occurs.
+6. Run `start_frida-hook.bat`. It should automatically open up the game. The window should stay opened if no error occurs.
 
 ## Currently tested emulator to be working
 1. LDPlayer9
-2. MuMu Player (Not X or Nebula)
 
 ## Changing contengency contract season
 Change the value of key `selectedCrisis` in `config\config.json` to whatever you want. The avaiable seasons are under `data\crisis`.
