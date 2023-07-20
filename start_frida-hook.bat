@@ -3,4 +3,4 @@
 
 cls
 call env\scripts\activate.bat
-py fridahook.py
+python fridahook.py
